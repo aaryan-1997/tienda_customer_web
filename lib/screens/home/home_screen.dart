@@ -9,6 +9,7 @@ import 'package:tiendaweb/utils/colors.dart';
 import 'package:tiendaweb/utils/dimension.dart';
 import 'package:tiendaweb/widgets/app_icon.dart';
 import 'package:tiendaweb/widgets/big_text.dart';
+import 'package:tiendaweb/widgets/icon_and_text_widget.dart';
 import 'package:tiendaweb/widgets/small_text.dart';
 
 import '../../utils/custom_widgets.dart';
@@ -75,15 +76,50 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                BigText(text: 'Home', color: AppColor.appColor),
+                IconAndBigTextWidget(
+                  icon: Icons.home_rounded,
+                  text: 'Home',
+                  iconColor: AppColor.black,
+                  textColor: AppColor.black,
+                  iconSize: Dimensions.height30,
+                  textSize: Dimensions.font20,
+                ),
                 SizedBox(width: Dimensions.height20),
-                BigText(text: 'Category', color: AppColor.appColor),
+                IconAndBigTextWidget(
+                  icon: Icons.category,
+                  text: 'Category',
+                  iconColor: AppColor.black,
+                  textColor: AppColor.black,
+                  iconSize: Dimensions.height30,
+                  textSize: Dimensions.font20,
+                ),
                 SizedBox(width: Dimensions.height20),
-                BigText(text: 'Wishlist', color: AppColor.appColor),
+                IconAndBigTextWidget(
+                  icon: Icons.favorite_rounded,
+                  text: 'Wishlist',
+                  iconColor: AppColor.black,
+                  textColor: AppColor.black,
+                  iconSize: Dimensions.height30,
+                  textSize: Dimensions.font20,
+                ),
                 SizedBox(width: Dimensions.height20),
-                BigText(text: 'About', color: AppColor.appColor),
+                IconAndBigTextWidget(
+                  icon: Icons.contact_page,
+                  text: 'About Us',
+                  iconColor: AppColor.black,
+                  textColor: AppColor.black,
+                  iconSize: Dimensions.height30,
+                  textSize: Dimensions.font20,
+                ),
                 SizedBox(width: Dimensions.height20),
-                BigText(text: 'Contact Us', color: AppColor.appColor),
+                IconAndBigTextWidget(
+                  icon: Icons.person_rounded,
+                  text: 'Contact Us',
+                  iconColor: AppColor.black,
+                  textColor: AppColor.black,
+                  iconSize: Dimensions.height30,
+                  textSize: Dimensions.font20,
+                ),
                 SizedBox(width: Dimensions.height20),
               ],
             )
@@ -187,37 +223,44 @@ class _HomeScreenState extends State<HomeScreen> {
           return (data.category.isEmpty)
               ? Container()
               : Container(
-                  height: Dimensions.screenHeight! * 0.1,
-                  padding: EdgeInsets.all(10),
+                  height: Dimensions.width80,
+                  margin: EdgeInsets.only(
+                      left: Dimensions.width10,
+                      right: Dimensions.width10,
+                      top: Dimensions.height10,
+                      bottom: Dimensions.height10),
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: data.category.length,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: EdgeInsets.all(5),
-                          padding: EdgeInsets.all(5),
-                          height: Dimensions.screenHeight! * 0.8,
-                          //width: Dimensions.screenHeight! * 0.2,
+                          margin: EdgeInsets.only(right: Dimensions.width5),
+                          padding: EdgeInsets.only(right: Dimensions.width10),
+                          height: Dimensions.width80,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: AppColor.appColor.withOpacity(0.8),
-                            borderRadius: BorderRadius.circular(15),
+                            color: AppColor.catColor,
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
                             children: [
                               Container(
-                                height: Dimensions.screenHeight! * 0.8,
-                                width: Dimensions.width100,
+                                height: Dimensions.width80,
+                                width: Dimensions.width80,
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
                                     image: NetworkImage(Url.IMAGE_BASE_URL +
                                         "${data.category[index].icon}"),
                                   ),
                                 ),
                               ),
-                              SmallText(
+                              SizedBox(width: Dimensions.width5),
+                              BigText(
                                 text: "${data.category[index].name}",
                                 color: AppColor.black,
+                                size: Dimensions.font18,
+                                weight: FontWeight.bold,
                               ),
                             ],
                           ),
@@ -262,8 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                               Dimensions.radius10), // if you need this
-                          side:
-                              BorderSide(color: AppColor.appColor, width: 0.5),
+                          side: BorderSide(color: AppColor.appColor, width: 1),
                         ),
                         child: Stack(
                           children: [
@@ -283,11 +325,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 SizedBox(height: Dimensions.height10),
-                                SmallText(
+                                BigText(
                                   text:
                                       "₹ ${data.productList[index].basePrice}",
                                   color: AppColor.black,
-                                  size: Dimensions.font15,
+                                  size: Dimensions.font18,
+                                  weight: FontWeight.bold,
                                 ),
                                 SizedBox(height: Dimensions.height5),
                                 Expanded(
@@ -297,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         right: Dimensions.width5),
                                     child: BigText(
                                       text: data.productList[index].name ?? "",
-                                      size: Dimensions.font15,
+                                      size: Dimensions.font18,
                                       maxline: 2,
                                       weight: FontWeight.w500,
                                       color: AppColor.black,
@@ -328,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         size: Dimensions.height30,
                                         backgroundColor: Colors.transparent,
                                         iconColor: AppColor.favColor,
-                                        iconSize: Dimensions.iconSize20,
+                                        iconSize: Dimensions.height30,
                                       ),
                                     )
                                   // Add to favourite
@@ -346,7 +389,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         size: Dimensions.height30,
                                         backgroundColor: Colors.transparent,
                                         iconColor: AppColor.favColor,
-                                        iconSize: Dimensions.iconSize20,
+                                        iconSize: Dimensions.height30,
                                       ),
                                     ),
                             ),
