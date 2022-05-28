@@ -14,20 +14,21 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  double height =0;
-  double width =0;
-
+  double height = 0;
+  double width = 0;
 
   @override
   void initState() {
     // TODO: implement initState
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {_navigation();});
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+      _navigation();
+    });
 
     super.initState();
   }
 
   void _navigation() {
-    Future.delayed(Duration(seconds: 10),(){
+    Future.delayed(Duration(seconds: 10), () {
       log('Logged In');
       // userType=='user'?
       /*Navigator.pushAndRemoveUntil(
@@ -39,28 +40,30 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
             (route) => false,
       );*/
-
     });
     // if (widget.isLogin == true) {
 
     // }
   }
 
-
   @override
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
-        //// Wrap your body in a stack
-      backgroundColor: appColor,
-        body: Center(
-          child: Container(
-            height: height*0.3,
-            width: width*0.3,
-            decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/image/splash.png'),),),
+      //// Wrap your body in a stack
+      backgroundColor: AppColor.appColor,
+      body: Center(
+        child: Container(
+          height: height * 0.3,
+          width: width * 0.3,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/image/splash.png'),
+            ),
           ),
         ),
+      ),
     );
   }
 }

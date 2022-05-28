@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
         title: 'Tienda Web',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         // home: StoreScreen(),
         home: (isLogin == true) ? StoreScreen() : LoginScreen(),

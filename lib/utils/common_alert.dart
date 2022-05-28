@@ -41,20 +41,22 @@ void commonAlert(BuildContext context, String message) {
       });
 }
 
-void commonAlertWithNavigation({required BuildContext context,
-  required String message,required Function() okBtnFunction}) {
-  showDialog(context: context,
+void commonAlertWithNavigation(
+    {required BuildContext context,
+    required String message,
+    required Function() okBtnFunction}) {
+  showDialog(
+      context: context,
       barrierDismissible: false,
       builder: (_) {
-        return  Dialog(
+        return Dialog(
           backgroundColor: Colors.transparent,
           child: Container(
             height: 200,
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
-              color: appColor,
-
+              color: AppColor.appColor,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -65,7 +67,7 @@ void commonAlertWithNavigation({required BuildContext context,
                   child: Text(
                     'Tienda',
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize:25),
+                    style: TextStyle(color: Colors.white, fontSize: 25),
                   ),
                 ),
                 Container(
@@ -74,17 +76,20 @@ void commonAlertWithNavigation({required BuildContext context,
                   child: Text(
                     message,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.white, fontSize: 14, fontFamily: 'Raleway'),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'Raleway'),
                   ),
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     okBtnFunction();
                   },
                   child: Container(
                     height: 40,
                     width: 100,
-                    margin: EdgeInsets.only(top: 10,bottom: 10),
+                    margin: EdgeInsets.only(top: 10, bottom: 10),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -93,7 +98,11 @@ void commonAlertWithNavigation({required BuildContext context,
                     child: Text(
                       'Ok',
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: black, fontSize: 12,fontWeight: FontWeight.bold, fontFamily: 'Raleway'),
+                      style: TextStyle(
+                          color: AppColor.black,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Raleway'),
                     ),
                   ),
                 ),

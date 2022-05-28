@@ -3,8 +3,13 @@ import 'dart:developer';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tiendaweb/api/api_url.dart';
 import 'package:tiendaweb/provider/homePro/home_provider.dart';
 import 'package:tiendaweb/utils/colors.dart';
+import 'package:tiendaweb/utils/dimension.dart';
+import 'package:tiendaweb/widgets/app_icon.dart';
+import 'package:tiendaweb/widgets/big_text.dart';
+import 'package:tiendaweb/widgets/small_text.dart';
 
 import '../../utils/custom_widgets.dart';
 
@@ -17,9 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  double height = 0;
-  double width = 0;
-
   List<String> imgList = [
     'https://www.texcial.com/wp-content/uploads/2020/07/EFWEF.png',
     'http://onlyracks.com/images/slider-2.jpg'
@@ -38,14 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
     // await context.read<AuthProvider>().fetchUserInfo(context: context,);
     await Provider.of<HomeProvider>(context, listen: false)
         .fetchSlider(context: context, isLoad: false, id: widget.shopId);
+    await Provider.of<HomeProvider>(context, listen: false)
+        .fetchCategory(context: context, isLoad: false, id: widget.shopId);
+    await Provider.of<HomeProvider>(context, listen: false)
+        .fetchProduct(context: context, isLoad: false, id: widget.shopId);
   }
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
+    Dimensions().init(context);
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: AppColor.white,
       appBar: appBar,
       body: body,
     );
@@ -54,88 +59,79 @@ class _HomeScreenState extends State<HomeScreen> {
   AppBar get appBar => AppBar(
         centerTitle: true,
         elevation: 0.4,
-        flexibleSpace: Container(
-          color: white,
-        ),
+        flexibleSpace: Container(color: AppColor.white),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              height: 50,
-              width: 50,
+              height: Dimensions.height50,
+              width: Dimensions.width45,
               decoration: BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage('assets/image/logo.png'),
                     fit: BoxFit.fill),
               ),
             ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    'Grocery',
-                    style: TextStyle(color: black, fontSize: 15),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    'Category',
-                    style: TextStyle(color: black, fontSize: 15),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    'About',
-                    style: TextStyle(color: black, fontSize: 15),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Text(
-                    'Contact Us',
-                    style: TextStyle(color: black, fontSize: 15),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                BigText(text: 'Home', color: AppColor.appColor),
+                SizedBox(width: Dimensions.height20),
+                BigText(text: 'Category', color: AppColor.appColor),
+                SizedBox(width: Dimensions.height20),
+                BigText(text: 'Wishlist', color: AppColor.appColor),
+                SizedBox(width: Dimensions.height20),
+                BigText(text: 'About', color: AppColor.appColor),
+                SizedBox(width: Dimensions.height20),
+                BigText(text: 'Contact Us', color: AppColor.appColor),
+                SizedBox(width: Dimensions.height20),
+              ],
             )
           ],
         ),
         actions: [
           IconButton(
               onPressed: () {},
-              icon: Icon(
-                Icons.search,
-                color: black,
-              )),
+              icon: Icon(Icons.search, color: AppColor.black)),
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.shopping_cart, color: black)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.person, color: black)),
-          SizedBox(
-            width: 10,
-          )
+              onPressed: () {},
+              icon: Icon(Icons.shopping_cart, color: AppColor.black)),
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.person, color: AppColor.black)),
+          SizedBox(width: Dimensions.width10),
         ],
       );
 
   Widget get body => ListView(
         children: [
+          // carousel
           carousel,
-          SizedBox(
-            height: 10,
-          ),
+          SizedBox(width: Dimensions.height10),
+          //offer
           offers,
-          SizedBox(
-            height: 10,
+          SizedBox(width: Dimensions.height10),
+          // categories
+          Container(
+            margin: EdgeInsets.only(left: Dimensions.width20),
+            child: BigText(
+              text: "Categories",
+              weight: FontWeight.bold,
+              color: AppColor.black,
+            ),
           ),
           categories,
-          SizedBox(
-            height: 10,
+          SizedBox(width: Dimensions.height10),
+          //product
+          Container(
+            margin: EdgeInsets.only(left: Dimensions.width20),
+            child: BigText(
+              text: "Popular Products",
+              weight: FontWeight.bold,
+              color: AppColor.black,
+            ),
           ),
+          products,
         ],
       );
 
@@ -145,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ? Container()
             : CarouselSlider.builder(
                 options: CarouselOptions(
-                  height: height * 0.9,
+                  height: Dimensions.screenHeight! * 0.9,
                   enlargeCenterPage: true,
                   autoPlay: false,
                   aspectRatio: 16 / 9,
@@ -160,23 +156,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   return cacheImage(
                       image: item.sliderImage,
                       radius: 0,
-                      height: height * 0.9,
-                      width: width);
+                      height: Dimensions.screenHeight! * 0.9,
+                      width: Dimensions.screenWidth!);
                 },
               );
       });
 
   Widget get offers => Container(
-        height: height * 0.2,
+        height: Dimensions.screenHeight! * 0.2,
         padding: EdgeInsets.all(10),
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 10,
+            itemCount: 5,
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.all(5),
-                height: height * 0.16,
-                width: height * 0.2,
+                height: Dimensions.screenHeight! * 0.16,
+                width: Dimensions.screenHeight! * 0.2,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/image/placeholder.png'),
@@ -186,30 +182,180 @@ class _HomeScreenState extends State<HomeScreen> {
             }),
       );
 
-  Widget get categories => Container(
-        height: height * 0.1,
-        padding: EdgeInsets.all(10),
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 10,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.all(5),
-                padding: EdgeInsets.all(5),
-                height: height * 0.8,
-                width: height * 0.2,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: itemColor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.add_business),
-                    Text('Categories'),
-                  ],
+  Widget get categories => Consumer<HomeProvider>(
+        builder: (context, data, child) {
+          return (data.category.isEmpty)
+              ? Container()
+              : Container(
+                  height: Dimensions.screenHeight! * 0.1,
+                  padding: EdgeInsets.all(10),
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: data.category.length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: EdgeInsets.all(5),
+                          padding: EdgeInsets.all(5),
+                          height: Dimensions.screenHeight! * 0.8,
+                          //width: Dimensions.screenHeight! * 0.2,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColor.appColor.withOpacity(0.8),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                height: Dimensions.screenHeight! * 0.8,
+                                width: Dimensions.width100,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: NetworkImage(Url.IMAGE_BASE_URL +
+                                        "${data.category[index].icon}"),
+                                  ),
+                                ),
+                              ),
+                              SmallText(
+                                text: "${data.category[index].name}",
+                                color: AppColor.black,
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
+                );
+        },
+      );
+
+  Widget get products =>
+      Consumer<HomeProvider>(builder: (context, data, child) {
+        return (data.category.isEmpty)
+            ? Container()
+            : Container(
+                padding: EdgeInsets.only(
+                    top: Dimensions.height15,
+                    left: Dimensions.height15,
+                    right: Dimensions.height15,
+                    bottom: Dimensions.height15),
+                child: GridView.builder(
+                  itemCount: data.productList.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 1,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                  ),
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      onTap: () async {
+                        // await homeController.productDetailById(
+                        //     homeController.productList[index].id.toString());
+                        // Get.toNamed(RouteHelper.getProductDetailsScreen());
+                      },
+                      child: Material(
+                        elevation: 2,
+                        type: MaterialType.canvas,
+                        shadowColor: AppColor.appColor.withOpacity(0.9),
+                        color: AppColor.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              Dimensions.radius10), // if you need this
+                          side:
+                              BorderSide(color: AppColor.appColor, width: 0.5),
+                        ),
+                        child: Stack(
+                          children: [
+                            Column(
+                              children: [
+                                Container(
+                                  height: Dimensions.height120,
+                                  width: Dimensions.screenWidth,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(
+                                        Dimensions.radius15),
+                                    image: DecorationImage(
+                                      image: NetworkImage(Url.IMAGE_BASE_URL +
+                                          "${data.productList[index].thumbnailImage}"),
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: Dimensions.height10),
+                                SmallText(
+                                  text:
+                                      "₹ ${data.productList[index].basePrice}",
+                                  color: AppColor.black,
+                                  size: Dimensions.font15,
+                                ),
+                                SizedBox(height: Dimensions.height5),
+                                Expanded(
+                                  child: Container(
+                                    padding: EdgeInsets.only(
+                                        left: Dimensions.width10,
+                                        right: Dimensions.width5),
+                                    child: BigText(
+                                      text: data.productList[index].name ?? "",
+                                      size: Dimensions.font15,
+                                      maxline: 2,
+                                      weight: FontWeight.w500,
+                                      color: AppColor.black,
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Positioned(
+                              top: Dimensions.height5,
+                              right: Dimensions.width5,
+                              child: data.productList[index]
+                                          .isAvailableWishlist ==
+                                      true
+                                  // Remove from favourite
+                                  ? GestureDetector(
+                                      onTap: () async {
+                                        await data.removeFromWishList(
+                                            context: context,
+                                            isLoad: false,
+                                            storeId: widget.shopId,
+                                            prodId: data.productList[index].id
+                                                .toString());
+                                      },
+                                      child: AppIcon(
+                                        icon: Icons.favorite_rounded,
+                                        size: Dimensions.height30,
+                                        backgroundColor: Colors.transparent,
+                                        iconColor: AppColor.favColor,
+                                        iconSize: Dimensions.iconSize20,
+                                      ),
+                                    )
+                                  // Add to favourite
+                                  : GestureDetector(
+                                      onTap: () async {
+                                        await data.addToWishList(
+                                            context: context,
+                                            isLoad: false,
+                                            storeId: widget.shopId,
+                                            prodId: data.productList[index].id
+                                                .toString());
+                                      },
+                                      child: AppIcon(
+                                        icon: Icons.favorite_border_outlined,
+                                        size: Dimensions.height30,
+                                        backgroundColor: Colors.transparent,
+                                        iconColor: AppColor.favColor,
+                                        iconSize: Dimensions.iconSize20,
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               );
-            }),
-      );
+      });
 }

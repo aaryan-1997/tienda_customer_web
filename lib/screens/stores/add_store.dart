@@ -43,7 +43,7 @@ class _AddStoreState extends State<AddStore> {
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: white,
+                color: AppColor.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey,
@@ -64,7 +64,7 @@ class _AddStoreState extends State<AddStore> {
           child: Column(
             children: [
               Container(
-                height: (height>800)?height * 0.5:height * 0.35,
+                height: (height > 800) ? height * 0.5 : height * 0.35,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('assets/image/addShop.png'),
@@ -138,15 +138,16 @@ class _AddStoreState extends State<AddStore> {
               isLoad = false;
             });
             if (_formKey.currentState!.validate()) {
-            // context.read<ShopProvider>().addStore(context: context, isLoad: isLoad,id: _shopController.text)
-              await Provider.of<ShopProvider>(context,listen: false).addStore(context: context,isLoad: true,id: _shopController.text)
-            .then((value) {
-            setState(() {
-              isLoad=false;
-            });
-            Navigator.pop(context,true);
-          });
-
+              // context.read<ShopProvider>().addStore(context: context, isLoad: isLoad,id: _shopController.text)
+              await Provider.of<ShopProvider>(context, listen: false)
+                  .addStore(
+                      context: context, isLoad: true, id: _shopController.text)
+                  .then((value) {
+                setState(() {
+                  isLoad = false;
+                });
+                Navigator.pop(context, true);
+              });
             } else {
               log('message');
               setState(() {
@@ -160,7 +161,7 @@ class _AddStoreState extends State<AddStore> {
                   margin: EdgeInsets.all(15),
                   padding: EdgeInsets.symmetric(horizontal: 60, vertical: 8),
                   decoration: BoxDecoration(
-                      color: appColor,
+                      color: AppColor.appColor,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
                           bottomRight: Radius.circular(30),
@@ -168,7 +169,7 @@ class _AddStoreState extends State<AddStore> {
                   child: Text(
                     'Continue',
                     style: TextStyle(
-                      color: white,
+                      color: AppColor.white,
                       fontSize: size20 - 2,
                     ),
                   ),

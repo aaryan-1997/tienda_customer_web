@@ -2,8 +2,6 @@ import "package:flutter/material.dart";
 import '/utils/colors.dart';
 import 'dart:math';
 
-
-
 class CustomLoader extends StatefulWidget {
   final double radius;
   final double dotRadius;
@@ -84,102 +82,99 @@ class _CustomLoaderState extends State<CustomLoader>
       height: 80.0,
       //color: Colors.black12,
       child: Center(
-        child:  RotationTransition(
+        child: RotationTransition(
           turns: animationRotation!,
-          child:  Container(
-            //color: Colors.limeAccent,
-            child:  Center(
-              child: Stack(
-                children: <Widget>[
-                  Transform.translate(
-                    offset: Offset(0.0, 0.0),
-                    child: Dot(
-                      radius: radius!,
-                      color: appColor,
-                    ),
+          child: Center(
+            child: Stack(
+              children: <Widget>[
+                Transform.translate(
+                  offset: Offset(0.0, 0.0),
+                  child: Dot(
+                    radius: radius!,
+                    color: AppColor.appColor,
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.amber,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0),
-                      radius! * sin(0.0),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.amber,
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.deepOrangeAccent,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0 + 1 * pi / 4),
-                      radius! * sin(0.0 + 1 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius! * cos(0.0),
+                    radius! * sin(0.0),
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.pinkAccent,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0 + 2 * pi / 4),
-                      radius! * sin(0.0 + 2 * pi / 4),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.deepOrangeAccent,
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.purple,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0 + 3 * pi / 4),
-                      radius !* sin(0.0 + 3 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius! * cos(0.0 + 1 * pi / 4),
+                    radius! * sin(0.0 + 1 * pi / 4),
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.blue,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0 + 4 * pi / 4),
-                      radius! * sin(0.0 + 4 * pi / 4),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.pinkAccent,
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.lightGreen,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0 + 5 * pi / 4),
-                      radius! * sin(0.0 + 5 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius! * cos(0.0 + 2 * pi / 4),
+                    radius! * sin(0.0 + 2 * pi / 4),
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.orangeAccent,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0 + 6 * pi / 4),
-                      radius! * sin(0.0 + 6 * pi / 4),
-                    ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.purple,
                   ),
-                  Transform.translate(
-                    child: Dot(
-                      radius: dotRadius!,
-                      color: Colors.blueAccent,
-                    ),
-                    offset: Offset(
-                      radius! * cos(0.0 + 7 * pi / 4),
-                      radius! * sin(0.0 + 7 * pi / 4),
-                    ),
+                  offset: Offset(
+                    radius! * cos(0.0 + 3 * pi / 4),
+                    radius! * sin(0.0 + 3 * pi / 4),
                   ),
-                ],
-              ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.blue,
+                  ),
+                  offset: Offset(
+                    radius! * cos(0.0 + 4 * pi / 4),
+                    radius! * sin(0.0 + 4 * pi / 4),
+                  ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.lightGreen,
+                  ),
+                  offset: Offset(
+                    radius! * cos(0.0 + 5 * pi / 4),
+                    radius! * sin(0.0 + 5 * pi / 4),
+                  ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.orangeAccent,
+                  ),
+                  offset: Offset(
+                    radius! * cos(0.0 + 6 * pi / 4),
+                    radius! * sin(0.0 + 6 * pi / 4),
+                  ),
+                ),
+                Transform.translate(
+                  child: Dot(
+                    radius: dotRadius!,
+                    color: Colors.blueAccent,
+                  ),
+                  offset: Offset(
+                    radius! * cos(0.0 + 7 * pi / 4),
+                    radius! * sin(0.0 + 7 * pi / 4),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -189,7 +184,6 @@ class _CustomLoaderState extends State<CustomLoader>
 
   @override
   void dispose() {
-
     controller!.dispose();
     super.dispose();
   }
@@ -203,18 +197,15 @@ class Dot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Center(
+    return Center(
       child: Container(
         width: radius,
         height: radius,
         decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-
       ),
     );
   }
 }
-
-
 
 void showLoaderDialog(BuildContext context) {
   AlertDialog alertDialogs = AlertDialog(
@@ -225,9 +216,14 @@ void showLoaderDialog(BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CustomLoader(
-            radius: 20,dotRadius: 8),SizedBox(width: 10,),
-        Text('Please wait...',style: TextStyle(fontSize: 18),),
+        CustomLoader(radius: 20, dotRadius: 8),
+        SizedBox(
+          width: 10,
+        ),
+        Text(
+          'Please wait...',
+          style: TextStyle(fontSize: 18),
+        ),
         /* CircularProgressIndicator(
               valueColor:  AlwaysStoppedAnimation<Color>(colorFont)),*/
       ],

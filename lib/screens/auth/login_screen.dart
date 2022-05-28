@@ -92,7 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: white,
+                color: AppColor.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey,
@@ -230,7 +230,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Text(
               'Forgot password?',
               style: TextStyle(
-                  color: buttonColor,
+                  color: AppColor.buttonColor,
                   fontSize: size20,
                   fontWeight: FontWeight.bold),
             )
@@ -293,13 +293,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   margin: EdgeInsets.all(15),
                   padding: EdgeInsets.symmetric(horizontal: 60, vertical: 8),
                   decoration: BoxDecoration(
-                    color: appColor,
+                    color: AppColor.appColor,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
                     'Login',
                     style: TextStyle(
-                      color: white,
+                      color: AppColor.white,
                       fontSize: size20 - 2,
                     ),
                   ),
@@ -312,12 +312,13 @@ class _LoginScreenState extends State<LoginScreen> {
         child: RichText(
           text: TextSpan(
               text: 'Don\'t have an account? ',
-              style: TextStyle(color: black, fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: AppColor.black, fontWeight: FontWeight.bold),
               children: [
                 TextSpan(
                   text: 'Signup',
                   style: TextStyle(
-                      color: appColor,
+                      color: AppColor.appColor,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()

@@ -48,6 +48,7 @@ class _StoreScreenState extends State<StoreScreen> {
 
   AppBar get appBar => AppBar(
         centerTitle: true,
+        elevation: 0,
         title: Text('Store'),
         actions: [
           IconButton(
@@ -78,7 +79,7 @@ class _StoreScreenState extends State<StoreScreen> {
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
-                color: white,
+                color: AppColor.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey,
@@ -142,12 +143,13 @@ class _StoreScreenState extends State<StoreScreen> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 10),
                         decoration: BoxDecoration(
-                            color: appColor,
+                            color: AppColor.appColor,
                             borderRadius: BorderRadius.circular(15)),
                         child: Text(
                           'Add Shop',
                           style: TextStyle(
-                              color: white, fontWeight: FontWeight.bold),
+                              color: AppColor.white,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
@@ -161,14 +163,14 @@ class _StoreScreenState extends State<StoreScreen> {
                     var item = data.storeModel[index];
                     return InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                              shopId: item.id.toString(),
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => HomeScreen(
+                                shopId: item.userId.toString(),
+                              ),
                             ),
-                          ),
-                        );
+                            (route) => false);
                       },
                       child: Card(
                         margin: EdgeInsets.only(top: 10),
@@ -216,18 +218,18 @@ class _StoreScreenState extends State<StoreScreen> {
                               Container(
                                   padding: EdgeInsets.all(5),
                                   decoration: BoxDecoration(
-                                      color: tagColor,
+                                      color: AppColor.tagColor,
                                       borderRadius: BorderRadius.circular(8)),
                                   child: Row(
                                     children: [
                                       Icon(
                                         Icons.star,
                                         size: 18,
-                                        color: white,
+                                        color: AppColor.white,
                                       ),
                                       Text(
                                         '${item.rating}',
-                                        style: TextStyle(color: white),
+                                        style: TextStyle(color: AppColor.white),
                                       )
                                     ],
                                   ))
@@ -246,7 +248,8 @@ class _StoreScreenState extends State<StoreScreen> {
                 child: Center(
                   child: Text(
                     'No stores found near you',
-                    style: TextStyle(color: grey, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        color: AppColor.grey, fontWeight: FontWeight.bold),
                   ),
                 ),
               )
@@ -300,18 +303,18 @@ class _StoreScreenState extends State<StoreScreen> {
                           Container(
                               padding: EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                  color: tagColor,
+                                  color: AppColor.tagColor,
                                   borderRadius: BorderRadius.circular(8)),
                               child: Row(
                                 children: [
                                   Icon(
                                     Icons.star,
                                     size: 18,
-                                    color: white,
+                                    color: AppColor.white,
                                   ),
                                   Text(
                                     '0',
-                                    style: TextStyle(color: white),
+                                    style: TextStyle(color: AppColor.white),
                                   )
                                 ],
                               ))
