@@ -1,72 +1,100 @@
+class UserModel {
+  bool? result;
+  String? message;
+  bool? isVerified;
+  bool? isOtpSent;
+  bool? isExist;
 
-class CheckAuthModel {
-  CheckAuthModel({
-    required this.result,
-    required this.message,
-    required this.isExist,
-    required this.isVerified,
-    required this.isOtpSent,
-  });
+  UserModel(
+      {this.result,
+      this.message,
+      this.isVerified,
+      this.isOtpSent,
+      this.isExist});
 
-  bool result;
-  String message;
-  bool isExist;
-  bool isVerified;
-  bool isOtpSent;
-
-  factory CheckAuthModel.fromJson(Map<String, dynamic> json) => CheckAuthModel(
-    result: json["result"],
-    message: json["message"],
-    isExist: json["is_exist"],
-    isVerified: json["is_verified"],
-    isOtpSent: json["is_otp_sent"],
-  );
-
+  UserModel.fromJson(Map<String, dynamic> json) {
+    result = json['result'];
+    message = json['message'];
+    isVerified = json['is_verified'];
+    isOtpSent = json['is_otp_sent'];
+    isExist = json['is_exist'];
+  }
 }
 
-class AuthUserModel {
-  AuthUserModel({
-    required this.result,
-    required this.message,
-    required this.accessToken,
-    required this.tokenType,
-    required this.user,
-  });
+class AuthModel {
+  bool? result;
+  String? message;
+  String? accessToken;
+  String? tokenType;
+  String? expiresAt;
+  User? user;
 
-  bool result;
-  String message;
-  String accessToken;
-  String tokenType;
-  User user;
+  AuthModel(
+      {this.result,
+      this.message,
+      this.accessToken,
+      this.tokenType,
+      this.expiresAt,
+      this.user});
 
-  factory AuthUserModel.fromJson(Map<String, dynamic> json) => AuthUserModel(
-    result: json["result"],
-    message: json["message"],
-    accessToken: json["access_token"],
-    tokenType: json["token_type"],
-    user: User.fromJson(json["user"]),
-  );
-
+  AuthModel.fromJson(Map<String, dynamic> json) {
+    result = json['result'];
+    message = json['message'];
+    accessToken = json['access_token'];
+    tokenType = json['token_type'];
+    expiresAt = json['expires_at'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
+  }
 }
 
 class User {
-  User({
-    required this.id,
-    required this.type,
-    required this.name,
-    required this.phone,
-  });
+  int? id;
+  String? type;
+  String? name;
+  String? email;
+  String? avatar;
+  String? avatarOriginal;
+  String? phone;
 
-  int id;
-  String type;
-  String name;
-  String phone;
+  User(
+      {this.id,
+      this.type,
+      this.name,
+      this.email,
+      this.avatar,
+      this.avatarOriginal,
+      this.phone});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["id"],
-    type: json["type"],
-    name: json["name"],
-    phone: json["phone"],
-  );
+  User.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    type = json['type'];
+    name = json['name'];
+    email = json['email'];
+    avatar = json['avatar'];
+    avatarOriginal = json['avatar_original'];
+    phone = json['phone'];
+  }
+}
 
+class SignUpModel {
+  bool? result;
+  String? message;
+  bool? isVerified;
+  bool? isOtpSent;
+  bool? isExist;
+
+  SignUpModel(
+      {this.result,
+      this.message,
+      this.isVerified,
+      this.isOtpSent,
+      this.isExist});
+
+  SignUpModel.fromJson(Map<String, dynamic> json) {
+    result = json['result'];
+    message = json['message'];
+    isVerified = json['is_verified'];
+    isOtpSent = json['is_otp_sent'];
+    isExist = json['is_exist'];
+  }
 }

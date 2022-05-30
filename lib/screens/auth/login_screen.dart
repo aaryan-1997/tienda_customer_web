@@ -1,19 +1,14 @@
-import 'dart:developer';
-import 'dart:html';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:tiendaweb/provider/authPro/auth_provider.dart';
-import 'package:tiendaweb/screens/auth/otp_screen.dart';
-import 'package:tiendaweb/screens/auth/signup_screen.dart';
+import 'package:get/get.dart';
+import 'package:tiendaweb/controllers/auth_controller.dart';
+import 'package:tiendaweb/routes/routes.dart';
 import 'package:tiendaweb/utils/colors.dart';
 import 'package:tiendaweb/utils/custom_loader.dart';
 import 'package:tiendaweb/utils/dimension.dart';
+import 'package:tiendaweb/widgets/big_text.dart';
 
-import '../../model/authModel/auth_model.dart';
 import '../../utils/custom_widgets.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,99 +19,56 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _mobileController = TextEditingController();
-  final TextEditingController _passController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  bool isShow = false;
-  bool isLoad = false;
-  String fcmToken = '';
-
-  String? _token;
-  Stream<String>? _tokenStream;
-  int notificationCount = 0;
-
-  void setToken(String token) {
-    setState(() {
-      _token = token;
-    });
-  }
 
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _initFun();
-    });
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {});
     super.initState();
   }
 
-  _initFun() async {
-    fcmToken = (await FirebaseMessaging.instance.getToken())!;
-
-    await FirebaseMessaging.instance.getToken().then((value) {
-      _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
-      _tokenStream!.listen(setToken);
-    });
-    log('Token==--->>  $_token');
-    FirebaseMessaging.onMessage.listen((event) {
-      log('Token==--->>  ${event.notification}');
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _mobileController.dispose();
-    _passController.dispose();
-  }
-
-  double height = 0;
-  double width = 0;
-
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: body,
     );
   }
 
-  Widget get body => LayoutBuilder(builder: (context, size) {
-        log('Size  ${size.maxWidth}');
-        return Align(
+  Widget get body => Align(
+        alignment: Alignment.center,
+        child: Container(
           alignment: Alignment.center,
-          child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                color: AppColor.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    blurRadius: 8.0,
-                    spreadRadius: 2.0,
-                  ),
-                ]),
-            height: size.maxHeight * 0.7,
-            width: size.maxWidth * 0.7,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                formSection,
-                SizedBox(width: 10),
-                (width > 850) ? Expanded(child: imageSection) : Container(),
-              ],
-            ),
+          padding: EdgeInsets.symmetric(horizontal: Dimensions.width10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(Dimensions.radius15),
+              color: AppColor.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  blurRadius: 8.0,
+                  spreadRadius: 2.0,
+                ),
+              ]),
+          height: Dimensions.screenHeight * 0.7,
+          width: Dimensions.screenWidth * 0.7,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              formSection,
+              SizedBox(width: Dimensions.width10),
+              (Dimensions.screenWidth > 850)
+                  ? Expanded(child: imageSection)
+                  : Container(),
+            ],
           ),
-        );
-      });
+        ),
+      );
 
   Widget get formSection => Container(
-        padding: EdgeInsets.only(left: 20),
-        width: (width > 850) ? width * 0.3 : width * 0.6,
+        padding: EdgeInsets.only(left: Dimensions.width20),
+        width: (Dimensions.screenWidth > 850)
+            ? Dimensions.screenWidth * 0.3
+            : Dimensions.screenWidth * 0.6,
         child: Form(
           key: _formKey,
           child: Column(
@@ -126,12 +78,12 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 20),
               Container(
                 alignment: Alignment.center,
-                child: Text(
-                  'Login',
-                  style: TextStyle(fontSize: size45),
+                child: BigText(
+                  text: 'Login',
+                  size: Dimensions.font24 * 2,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: Dimensions.height20),
               textFieldMobile,
               // textFieldPass,
               // forgotPass,
@@ -143,10 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
   Widget get imageSection => AspectRatio(
-        aspectRatio: (width > 1200) ? 1 : 0.9,
+        aspectRatio: (Dimensions.screenWidth > 1200) ? 1 : 0.9,
         child: Container(
-          height: height * 0.5,
-          width: (width > 1200) ? width * 0.3 : width * 0.2,
+          height: Dimensions.screenHeight * 0.5,
+          width: (Dimensions.screenWidth > 1200)
+              ? Dimensions.screenWidth * 0.3
+              : Dimensions.screenWidth * 0.2,
           decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('assets/image/loginIcon.png'),
@@ -155,157 +109,83 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
 
-  Widget get textFieldMobile => Container(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: TextFormField(
-          controller: _mobileController,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp("[0-9]")),
-            LengthLimitingTextInputFormatter(10)
-          ],
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.phone_android),
-            labelText: 'Mobile number',
-            border: border,
-            enabledBorder: border,
-            focusedBorder: enableBorder,
-            errorBorder: errorBorder,
-            focusedErrorBorder: errorBorder,
+  Widget get textFieldMobile =>
+      GetBuilder<AuthController>(builder: (authController) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: TextFormField(
+            controller: authController.mobileNumberController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+              LengthLimitingTextInputFormatter(10)
+            ],
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.phone_android),
+              labelText: 'Mobile number',
+              border: border,
+              enabledBorder: border,
+              focusedBorder: enableBorder,
+              errorBorder: errorBorder,
+              focusedErrorBorder: errorBorder,
+            ),
+            validator: (value) {
+              if ((GetUtils.isNullOrBlank(value)!) ||
+                  GetUtils.isNumericOnly(value.toString()) &&
+                      !GetUtils.isLengthEqualTo(value, 10)) {
+                return 'Please enter your mobile number';
+              }
+              return null;
+            },
           ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter your mobile number';
-            } else if (_mobileController.text.length < 10) {
-              return "Please enter a valid Mobile number";
-            }
-            /*else if (!isValidMobile) {
-          return 'Mobile number doesn\'t exist';
-        }*/
-            return null;
-          },
-        ),
-      );
-
-  Widget get textFieldPass => Container(
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: TextFormField(
-          controller: _passController,
-          obscureText: !isShow,
-          obscuringCharacter: '*',
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          decoration: InputDecoration(
-            prefixIcon: Icon(Icons.lock),
-            labelText: 'Password',
-            suffixIcon: InkWell(
-                onTap: () {
-                  setState(() {
-                    isShow = !isShow;
-                  });
-                },
-                child: Icon(isShow ? Icons.visibility : Icons.visibility_off)),
-            border: border,
-            enabledBorder: border,
-            focusedBorder: enableBorder,
-            errorBorder: errorBorder,
-            focusedErrorBorder: errorBorder,
-          ),
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter password';
-            } else if (_passController.text.length < 6) {
-              return 'Please enter 6 digit password';
-            }
-            return null;
-          },
-        ),
-      );
+        );
+      });
 
   Widget get forgotPass => Container(
         padding: EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(
-              'Forgot password?',
-              style: TextStyle(
-                  color: AppColor.buttonColor,
-                  fontSize: size20,
-                  fontWeight: FontWeight.bold),
-            )
+            BigText(
+              text: 'Forgot password?',
+              size: Dimensions.font20,
+              weight: FontWeight.bold,
+              color: AppColor.buttonColor,
+            ),
           ],
         ),
       );
 
-  Widget get signButton => Align(
-        alignment: Alignment.center,
-        child: InkWell(
-          onTap: () async {
-            /* await FirebaseMessaging.instance.getToken().then((value) {
-            });*/
-            setState(() {
-              isLoad = true;
-            });
-            if (_formKey.currentState!.validate()) {
-              Provider.of<AuthProvider>(context, listen: false).login(
-                  context: context,
-                  data: {
-                    "username": _mobileController.text.trim(),
-                    "device_token": fcmToken.toString()
-                  }).then((value) async {
-                setState(() {
-                  isLoad = false;
-                  CheckAuthModel data =
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .checkAuthModel!;
-                  if (data.isExist == false) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignupScreen(
-                          mobile: _mobileController.text,
-                        ),
-                      ),
-                    );
-                  } else {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OTPScreen(
-                          mobile: _mobileController.text,
-                        ),
-                      ),
-                    );
-                  }
-                });
-              });
-            } else {
-              log('message');
-              setState(() {
-                isLoad = false;
-              });
-            }
-          },
-          child: (isLoad == true)
+  Widget get signButton =>
+      GetBuilder<AuthController>(builder: (authController) {
+        return Align(
+          alignment: Alignment.center,
+          child: (authController.isLoading == true)
               ? CustomLoader()
-              : Container(
-                  margin: EdgeInsets.all(15),
-                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: AppColor.appColor,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
+              : InkWell(
+                  onTap: () async {
+                    if (_formKey.currentState!.validate()) {
+                      await authController.login();
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(15),
+                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColor.appColor,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: BigText(
+                      text: 'Login',
+                      size: Dimensions.font20,
+                      weight: FontWeight.bold,
                       color: AppColor.white,
-                      fontSize: size20 - 2,
                     ),
                   ),
                 ),
-        ),
-      );
+        );
+      });
 
   Widget get signupText => Container(
         alignment: Alignment.center,
@@ -322,12 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline),
                   recognizer: TapGestureRecognizer()
-                    ..onTap = () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignupScreen(mobile: ''),
-                          ),
-                        ),
+                    ..onTap = () => Get.toNamed(Routes.getSignupRoute()),
                 ),
               ]),
         ),

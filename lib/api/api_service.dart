@@ -1,67 +1,52 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tiendaweb/api/app_constant.dart';
 
 import '../utils/constant.dart';
 
-class ApiClient {
+class ApiClient extends GetConnect implements GetxService {
   late String token;
-  /*final String appBaseUrl;
+  final String appBaseUrl;
   late Map<String, String> mainHeaders;
 
   ApiClient({required this.appBaseUrl}) {
     baseUrl = appBaseUrl;
-    timeout = const Duration(seconds: 30);
     token = AppConstant.ACCESS_TOKEN;
+    timeout = const Duration(seconds: 30);
     mainHeaders = {
       'Contect-type': 'application/json;charset-UTF-8',
-      'Authorization': 'Bearer $token'
     };
   }
-*/
-  Future<http.Response> getData({required Uri uri}) async {
+
+  Future<Response> getData({required String url}) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var accessToken = prefs.getString(accessTokenKey).toString();
-      final response = await http.get(uri, headers: {
-        'Contect-type': 'application/json',
+      var accessToken = prefs.getString(ConstantKey.accessTokenKey).toString();
+      Response response = await get(url, headers: {
+        'Contect-type': 'application/json;charset-UTF-8',
         'Authorization': 'Bearer $accessToken'
       });
-      log('Response__GET___====>>${response.body.toString()}');
+      log(response.statusText.toString());
       return response;
     } catch (e) {
-      return http.Response(e.toString(), 1);
+      return Response(statusCode: 1, statusText: e.toString());
     }
   }
 
-  Future<http.Response> postData({required Uri url, required Map body}) async {
+  Future<Response> postData({required String url, body}) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      var accessToken = prefs.getString(accessTokenKey).toString();
-      log('Response__POST___====>>$accessToken');
-      final response = await http.post(url, body: body, headers: {
-        'Contect-type': 'application/json',
+      var accessToken = prefs.getString(ConstantKey.accessTokenKey).toString();
+      Response response = await post(url, body, headers: {
+        'Contect-type': 'application/json;charset-UTF-16',
         'Authorization': 'Bearer $accessToken'
       });
-      log('Response__POST___====>>${response.body.toString()}');
+      log(response.statusText.toString());
       return response;
     } catch (e) {
-      return http.Response(e.toString(), 1);
-    }
-  }
-
-  Future<http.Response> login({required Uri url, required Map body}) async {
-    try {
-      var headers = {'Contect-type': 'application/json;charset-UTF-8'};
-      debugPrint('BODY___====>>$body');
-      final response = await http.post(url, body: body, headers: headers);
-      debugPrint('Response__Status___====>>${response.statusCode.toString()}');
-      debugPrint('Response___====>>${response.body.toString()}');
-      return response;
-    } catch (e) {
-      return http.Response(e.toString(), 1);
+      return Response(statusCode: 1, statusText: e.toString());
     }
   }
 }

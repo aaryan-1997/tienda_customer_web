@@ -1,16 +1,15 @@
 import 'dart:developer';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
-import 'package:provider/provider.dart';
-import 'package:tiendaweb/provider/authPro/auth_provider.dart';
+import 'package:tiendaweb/controllers/auth_controller.dart';
 import 'package:tiendaweb/utils/colors.dart';
+import 'package:tiendaweb/utils/constant.dart';
 import 'package:tiendaweb/utils/dimension.dart';
+import 'package:tiendaweb/widgets/small_text.dart';
 
 import '../../utils/custom_loader.dart';
-import '../stores/store_screen.dart';
 
 class OTPScreen extends StatefulWidget {
   final String mobile;
@@ -21,39 +20,15 @@ class OTPScreen extends StatefulWidget {
 }
 
 class _OTPScreenState extends State<OTPScreen> {
-  final TextEditingController _pinController = TextEditingController();
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  bool isShow = false;
-  bool isLoad = false;
-  String fcmToken = '';
 
   double height = 0;
   double width = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _initFun();
-    });
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {});
     super.initState();
-  }
-
-  _initFun() async {
-    fcmToken = (await FirebaseMessaging.instance.getToken())!;
-    print('Token==--->>  $fcmToken');
-    FirebaseMessaging.onMessage.listen((event) {
-      print('Token==--->>  ${event.notification}');
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _pinController.dispose();
   }
 
   @override
@@ -91,14 +66,14 @@ class _OTPScreenState extends State<OTPScreen> {
                 SizedBox(
                   width: 10,
                 ),
-                (width > 850) ? imageSection : Container(),
+                (width > 850) ? Expanded(child: imageSection) : Container(),
               ],
             ),
           ),
         );
       });
 
-  Widget get formSection => Container(
+  Widget get formSection => SizedBox(
         width: (width > 850) ? width * 0.3 : width * 0.6,
         child: Form(
           key: _formKey,
@@ -106,25 +81,22 @@ class _OTPScreenState extends State<OTPScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 20,
+              SizedBox(height: Dimensions.height20),
+              SmallText(
+                text: 'Verify OTP',
+                size: Dimensions.font18 * 2,
+                color: AppColor.black,
               ),
-              Text(
-                'Verify OTP',
-                style: TextStyle(fontSize: size34),
+              SizedBox(height: Dimensions.height10),
+              SmallText(
+                text: '${ConstantKey.otpScreenText} ${widget.mobile}',
+                size: Dimensions.font24,
+                color: AppColor.black,
+                maxLine: 2,
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'Please enter the OTP sent to your Phone Number +91 ${widget.mobile}',
-                style: TextStyle(fontSize: size20),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              otpField,
 
+              SizedBox(height: Dimensions.height20),
+              otpField,
               otpButton,
               // signupText,
             ],
@@ -143,78 +115,51 @@ class _OTPScreenState extends State<OTPScreen> {
         ),
       );
 
-  Widget get otpField => Container(
-        child: Pinput(
-          controller: _pinController,
+  Widget get otpField => GetBuilder<AuthController>(builder: (authController) {
+        return Pinput(
+          controller: authController.otpController,
           pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
           keyboardType: TextInputType.number,
           length: 6,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter your OTP';
-            } else if (_pinController.text.trim() == '') {
+            } else if (authController.otpController.text.trim() == '') {
               return 'Please enter your OTP';
             } else {
               return null;
             }
           },
-        ),
-      );
+        );
+      });
 
-  Widget get otpButton => Align(
-        alignment: Alignment.center,
-        child: InkWell(
-          onTap: () async {
-            /* await FirebaseMessaging.instance.getToken().then((value) {
-              setState(() {
-                fcmToken = value!;
-              });
-            });*/
-            setState(() {
-              isLoad = true;
-            });
-            if (_formKey.currentState!.validate()) {
-              Provider.of<AuthProvider>(context, listen: false).otp(
-                  context: context,
-                  data: {"otp_text": _pinController.text}).then((value) {
-                setState(() {
-                  isLoad = false;
-                });
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => StoreScreen(),
-                    ),
-                    (route) => false);
-              });
-            } else {
-              log('message');
-              setState(() {
-                isLoad = false;
-              });
-            }
-          },
-          child: (isLoad == true)
+  Widget get otpButton => GetBuilder<AuthController>(builder: (authController) {
+        return Align(
+          alignment: Alignment.center,
+          child: (authController.isLoading == true)
               ? CustomLoader()
-              : Container(
-                  margin: EdgeInsets.all(15),
-                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 8),
-                  decoration: BoxDecoration(
-                      color: AppColor.appColor,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
-                          bottomLeft: Radius.circular(30))),
-                  child: Text(
-                    'Verify',
-                    style: TextStyle(
+              : InkWell(
+                  onTap: () async {
+                    if (_formKey.currentState!.validate()) {
+                      await authController.otp();
+                    }
+                  },
+                  child: Container(
+                    margin: EdgeInsets.all(Dimensions.height15),
+                    padding: EdgeInsets.symmetric(horizontal: 60, vertical: 8),
+                    decoration: BoxDecoration(
+                        color: AppColor.appColor,
+                        borderRadius:
+                            BorderRadius.circular(Dimensions.radius15 * 2)),
+                    child: SmallText(
+                      text: 'Verify',
                       color: AppColor.white,
-                      fontSize: size20 - 2,
+                      size: Dimensions.font18,
                     ),
                   ),
                 ),
-        ),
-      );
+        );
+      });
 
   Widget get signupText => Container(
         alignment: Alignment.center,

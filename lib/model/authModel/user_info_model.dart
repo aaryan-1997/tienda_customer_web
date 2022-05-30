@@ -1,44 +1,55 @@
+class UserDetailModel {
+  UserDetails? userDetails;
+  bool? success;
+  String? message;
 
-class UserInfoModel {
-  UserInfoModel({
-    required this.id,
-    required this.name,
-    required this.type,
-    required this.email,
-    required this.avatar,
-    required this.avatarOriginal,
-    required this.address,
-    required this.city,
-    required this.country,
-    required this.postalCode,
-    required this.phone,
-  });
+  UserDetailModel({this.userDetails, this.success, this.message});
 
-  int id;
-  String name;
-  String type;
-  String email;
-  String avatar;
-  String avatarOriginal;
-  String address;
-  String city;
-  String country;
-  String postalCode;
-  String phone;
+  UserDetailModel.fromJson(Map<String, dynamic> json) {
+    userDetails =
+        json['data'] != null ? UserDetails.fromJson(json['data']) : null;
+    success = json['success'];
+    message = json['message'];
+  }
+}
 
-  factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
-    id: json["id"],
-    name: (json["name"]==null)?'':json["name"].toString(),
-    type:  (json["type"]==null)?'':json["type"].toString(),
-    email: (json["email"]==null)?'': json["email"].toString(),
-    avatar:  (json["avatar"]==null)?'':json["avatar"].toString(),
-    avatarOriginal:  (json["avatar_original"]==null)?'':json["avatar_original"].toString(),
-    address:  (json["address"]==null)?'':json["address"].toString(),
-    city:  (json["city"]==null)?'':json["city"].toString(),
-    country:  (json["country"]==null)?'':json["country"].toString(),
-    postalCode:  (json["postal_code"]==null)?'':json["postal_code"].toString(),
-    phone:  (json["phone"]==null)?'':json["phone"].toString(),
-  );
+class UserDetails {
+  int? id;
+  String? name;
+  String? type;
+  String? email;
+  String? avatar;
+  String? avatarOriginal;
+  String? address;
+  String? city;
+  String? country;
+  String? postalCode;
+  String? phone;
 
+  UserDetails(
+      {this.id,
+      this.name,
+      this.type,
+      this.email,
+      this.avatar,
+      this.avatarOriginal,
+      this.address,
+      this.city,
+      this.country,
+      this.postalCode,
+      this.phone});
 
+  UserDetails.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    type = json['type'];
+    email = json['email'];
+    avatar = json['avatar'];
+    avatarOriginal = json['avatar_original'];
+    address = json['address'];
+    city = json['city'];
+    country = json['country'];
+    postalCode = json['postal_code'];
+    phone = json['phone'];
+  }
 }

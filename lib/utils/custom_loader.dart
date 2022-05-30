@@ -6,7 +6,8 @@ class CustomLoader extends StatefulWidget {
   final double radius;
   final double dotRadius;
 
-  const CustomLoader({this.radius = 20.0, this.dotRadius = 8.0});
+  const CustomLoader({Key? key, this.radius = 20.0, this.dotRadius = 8.0})
+      : super(key: key);
 
   @override
   _CustomLoaderState createState() => _CustomLoaderState();
@@ -28,8 +29,6 @@ class _CustomLoaderState extends State<CustomLoader>
 
     radius = widget.radius;
     dotRadius = widget.dotRadius;
-
-    print(dotRadius);
 
     controller = AnimationController(
         lowerBound: 0.0,
@@ -77,7 +76,7 @@ class _CustomLoaderState extends State<CustomLoader>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: 80.0,
       height: 80.0,
       //color: Colors.black12,
@@ -193,7 +192,7 @@ class Dot extends StatelessWidget {
   final double? radius;
   final Color? color;
 
-  const Dot({this.radius, this.color});
+  const Dot({Key? key, this.radius, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

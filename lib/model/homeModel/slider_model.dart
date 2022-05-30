@@ -1,22 +1,32 @@
-
-import 'package:tiendaweb/api/api_url.dart';
-
 class SliderModel {
-  SliderModel({
-    required this.sliderImage,
-    required this.sliderTitle,
-    required this.sliderTargetUrl,
-  });
+  List<SliderDetail>? sliderList;
+  bool? result;
+  int? status;
 
-  String sliderImage;
-  String sliderTitle;
-  String sliderTargetUrl;
+  SliderModel({this.sliderList, this.result, this.status});
 
-  factory SliderModel.fromJson(Map<String, dynamic> json) => SliderModel(
-    sliderImage:Url.IMAGE_BASE_URL+ json["slider_image"],
-    sliderTitle: json["slider_title"],
-    sliderTargetUrl: json["slider_target_url"],
-  );
+  SliderModel.fromJson(Map<String, dynamic> json) {
+    if (json['data'] != null) {
+      sliderList = <SliderDetail>[];
+      json['data'].forEach((v) {
+        sliderList!.add(SliderDetail.fromJson(v));
+      });
+    }
+    result = json['result'];
+    status = json['status'];
+  }
+}
 
+class SliderDetail {
+  String? sliderImage;
+  String? sliderTitle;
+  String? sliderTargetUrl;
 
+  SliderDetail({this.sliderImage, this.sliderTitle, this.sliderTargetUrl});
+
+  SliderDetail.fromJson(Map<String, dynamic> json) {
+    sliderImage = json['slider_image'];
+    sliderTitle = json['slider_title'];
+    sliderTargetUrl = json['slider_target_url'];
+  }
 }

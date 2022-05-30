@@ -4,8 +4,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import '/utils/colors.dart';
 
-import '../home/home_screen.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -19,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
       _navigation();
     });
@@ -30,20 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void _navigation() {
     Future.delayed(Duration(seconds: 10), () {
       log('Logged In');
-      // userType=='user'?
-      /*Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(
-
-          ),
-        ),
-            (route) => false,
-      );*/
     });
-    // if (widget.isLogin == true) {
-
-    // }
   }
 
   @override

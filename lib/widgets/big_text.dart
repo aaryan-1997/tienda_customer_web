@@ -24,7 +24,6 @@ class BigText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Dimensions().init(context);
     return Text(
       text,
       maxLines: maxline,

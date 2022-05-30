@@ -1,70 +1,72 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 
-    <base href="/">
+  <base href="/">
 
-    <meta charset="UTF-8">
-    <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-    <meta name="description" content="Tienda Customer web app.">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Tienda">
 
-    <!-- iOS meta tags & icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Tienda Web">
-    <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Tienda">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png"/>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" />
 
-    <title>Tienda Web</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" type="text/css" href="style.css">
+  <title>Tienda</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
-<!-- This script installs service_worker.js to provide PWA functionality to
+  <!-- This script installs service_worker.js to provide PWA functionality to
      application. For more information, see:
      https://developers.google.com/web/fundamentals/primers/service-workers -->
-<script>
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('flutter-first-frame', function () {
-            navigator.serviceWorker.register('flutter_service_worker.js');
-            navigator.serviceWorker.register("/firebase-messaging-sw.js");
-          });
-        }
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+        navigator.serviceWorker.register("/firebase-messaging-sw.js");
+      });
+    }
 
-</script>
+  </script>
 
-<script src="https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.8.1/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.8.1/firebase-messaging.js"></script>
 
-<div class="center">
-    <img src="logo.png" alt="logo" height="250" width="250px"/>
+  <div class="center">
+    <img src="logo.png" alt="logo" height="250" width="250px" />
     <br>
     <div class="loader" style="width:250px;text-align: center;">
-        <div class="classic-10"></div>
+      <div class="classic-10"></div>
     </div>
-</div>
-<script>
+  </div>
+  <script>
     var firebaseConfig = {
-    apiKey: "AIzaSyALDyH9CEtHUe3zfMu6Bbx6t6Lsgbo8sS4",
-    authDomain: "tiendaweb-218ec.firebaseapp.com",
-    projectId: "tiendaweb-218ec",
-    storageBucket: "tiendaweb-218ec.appspot.com",
-    messagingSenderId: "1009718506764",
-    appId: "1:1009718506764:web:4f62a83e29c94c0c344529",
-    measurementId: "G-ZMZQS98Q8E"
-  };
+      apiKey: "AIzaSyALDyH9CEtHUe3zfMu6Bbx6t6Lsgbo8sS4",
+      authDomain: "tiendaweb-218ec.firebaseapp.com",
+      projectId: "tiendaweb-218ec",
+      storageBucket: "tiendaweb-218ec.appspot.com",
+      messagingSenderId: "1009718506764",
+      appId: "1:1009718506764:web:4f62a83e29c94c0c344529",
+      measurementId: "G-ZMZQS98Q8E"
+    };
 
-  // Initialize Firebase
-<!--  const app = initializeApp(firebaseConfig);-->
+    // Initialize Firebase const app = initializeApp(firebaseConfig);
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
-</script>
+  </script>
 
-<script src="main.dart.js" type="application/javascript"></script>
+  <script src="main.dart.js" type="application/javascript"></script>
 </body>
+
 </html>

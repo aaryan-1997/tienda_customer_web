@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tiendaweb/provider/shopPro/shop_provider.dart';
-import 'package:tiendaweb/screens/home/home_screen.dart';
-import 'package:tiendaweb/screens/stores/add_store.dart';
+import 'package:get/get.dart';
+import 'package:tiendaweb/controllers/location_controller.dart';
+import 'package:tiendaweb/controllers/store_controller.dart';
+import 'package:tiendaweb/routes/routes.dart';
 import 'package:tiendaweb/utils/constant.dart';
 import 'package:tiendaweb/utils/custom_widgets.dart';
 import 'package:tiendaweb/utils/dimension.dart';
+import 'package:tiendaweb/utils/sp_function.dart';
+import 'package:tiendaweb/widgets/big_text.dart';
+import 'package:tiendaweb/widgets/small_text.dart';
 
 import '../../utils/colors.dart';
 
@@ -18,28 +20,14 @@ class StoreScreen extends StatefulWidget {
 }
 
 class _StoreScreenState extends State<StoreScreen> {
-  double height = 0;
-  double width = 0;
-
   @override
   void initState() {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _initFun();
-    });
+    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {});
     super.initState();
-  }
-
-  _initFun() async {
-    await Provider.of<ShopProvider>(context, listen: false)
-        .fetchStore(context: context, isLoad: true);
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    debugPrint('===>>>   ${_pref.getString(accessTokenKey).toString()}');
   }
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: appBar,
       body: body,
@@ -53,21 +41,15 @@ class _StoreScreenState extends State<StoreScreen> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddStore(),
-                  ),
-                ).then((value) async {
-                  await Provider.of<ShopProvider>(context, listen: false)
-                      .fetchStore(context: context, isLoad: true);
-                });
+                Get.toNamed(Routes.getAddStoreRoute());
               },
               icon: Icon(Icons.add_business_sharp)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.location_pin)),
-          SizedBox(
-            width: 10,
-          )
+          IconButton(
+              onPressed: () {
+                Get.find<LocationController>().getGeoLocationPosition();
+              },
+              icon: Icon(Icons.location_pin)),
+          SizedBox(width: 10)
         ],
       );
 
@@ -97,23 +79,15 @@ class _StoreScreenState extends State<StoreScreen> {
             child: ListView(
               children: [
                 storeListContainer,
-                SizedBox(
-                  height: 20,
+                SizedBox(height: Dimensions.height20),
+                BigText(
+                  text: 'Near by Store',
+                  size: Dimensions.font18,
+                  weight: FontWeight.bold,
                 ),
-                Text(
-                  'Near by Store',
-                  style: TextStyle(
-                    fontSize: size20 - 5,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: Dimensions.height20),
                 storeNearBy,
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: Dimensions.height20),
               ],
             ),
           ),
@@ -121,23 +95,15 @@ class _StoreScreenState extends State<StoreScreen> {
       });
 
   Widget get storeListContainer =>
-      Consumer<ShopProvider>(builder: (context, data, child) {
+      GetBuilder<StoreController>(builder: (storeController) {
         return Container(
-          child: (data.storeModel.isEmpty)
+          child: (storeController.storedetailList.isEmpty)
               ? InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddStore(),
-                      ),
-                    ).then((value) async {
-                      await Provider.of<ShopProvider>(context, listen: false)
-                          .fetchStore(context: context, isLoad: true);
-                    });
+                    Get.toNamed(Routes.getAddStoreRoute());
                   },
                   child: SizedBox(
-                    height: height * 0.2,
+                    height: Dimensions.screenHeight * 0.2,
                     child: Center(
                       child: Container(
                         padding:
@@ -158,19 +124,19 @@ class _StoreScreenState extends State<StoreScreen> {
               : ListView.builder(
                   physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: data.storeModel.length,
+                  itemCount: storeController.storedetailList.length,
                   itemBuilder: (context, index) {
-                    var item = data.storeModel[index];
+                    var item = storeController.storedetailList[index];
                     return InkWell(
-                      onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => HomeScreen(
-                                shopId: item.userId.toString(),
-                              ),
-                            ),
-                            (route) => false);
+                      onTap: () async {
+                        SPFunction spFunction = SPFunction();
+                        await spFunction.setString(
+                            ConstantKey.storeIdKey,
+                            storeController.storedetailList[index].userId
+                                .toString());
+                        await storeController.initalLoad(context);
+                        Get.offNamedUntil(
+                            Routes.getHomeRoute(), (route) => false);
                       },
                       child: Card(
                         margin: EdgeInsets.only(top: 10),
@@ -183,7 +149,7 @@ class _StoreScreenState extends State<StoreScreen> {
                                 child: Row(
                                   children: [
                                     cacheImage(
-                                        image: item.logo,
+                                        image: item.logo ?? "",
                                         radius: 5,
                                         height: 50,
                                         width: 50),
@@ -196,13 +162,13 @@ class _StoreScreenState extends State<StoreScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            item.name,
+                                            item.name ?? "",
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(
-                                            item.address,
+                                            item.address ?? "",
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -241,87 +207,98 @@ class _StoreScreenState extends State<StoreScreen> {
                   }),
         );
       });
-  Widget get storeNearBy => Container(
-        child: (true)
-            ? Container(
-                height: height * 0.3,
-                child: Center(
-                  child: Text(
-                    'No stores found near you',
-                    style: TextStyle(
-                        color: AppColor.grey, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              )
-            : ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Container(
-                      padding: EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  'assets/image/logo.png',
-                                  height: 50,
-                                  width: 50,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'data',
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+  Widget get storeNearBy =>
+      GetBuilder<StoreController>(builder: (storeController) {
+        return Container(
+          child: (storeController.nearbyStore.isEmpty)
+              ? SizedBox(
+                  height: Dimensions.screenHeight * 0.3,
+                  child: Center(
+                      child: BigText(
+                    text: 'No stores found near you',
+                    size: Dimensions.font18,
+                    color: AppColor.black,
+                  )),
+                )
+              : ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: storeController.nearbyStore.length,
+                  itemBuilder: (context, index) {
+                    var item = storeController.nearbyStore[index];
+                    return InkWell(
+                      onTap: () {
+                        storeController.initalLoad(context);
+                        Get.offNamedUntil(
+                            Routes.getHomeRoute(), (route) => false);
+                      },
+                      child: Card(
+                        margin: EdgeInsets.only(top: 10),
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    cacheImage(
+                                        image: item.logo ?? "",
+                                        radius: 5,
+                                        height: 50,
+                                        width: 50),
+                                    SizedBox(width: Dimensions.width5),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          BigText(
+                                            text: item.name ?? "",
+                                            size: Dimensions.font18,
+                                            color: AppColor.black,
+                                            weight: FontWeight.bold,
+                                          ),
+                                          SmallText(
+                                            text: item.address ?? "",
+                                            size: Dimensions.font18,
+                                            color: AppColor.grey,
+                                          )
+                                        ],
                                       ),
-                                      Text(
-                                        'datadsa asdsa d asdas ds asada sa a',
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(width: Dimensions.width5),
+                              Container(
+                                padding: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  color: AppColor.green,
+                                  borderRadius: BorderRadius.circular(
+                                      Dimensions.radius10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      size: Dimensions.iconSize20,
+                                      color: AppColor.white,
+                                    ),
+                                    SmallText(
+                                      text: "${item.rating}",
+                                      size: Dimensions.font18,
+                                      color: AppColor.white,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Container(
-                              padding: EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                  color: AppColor.tagColor,
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    size: 18,
-                                    color: AppColor.white,
-                                  ),
-                                  Text(
-                                    '0',
-                                    style: TextStyle(color: AppColor.white),
-                                  )
-                                ],
-                              ))
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                }),
-      );
+                    );
+                  }),
+        );
+      });
 }

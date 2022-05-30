@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tiendaweb/utils/dimension.dart';
 import 'package:tiendaweb/widgets/big_text.dart';
 
 class IconAndBigTextWidget extends StatelessWidget {
@@ -25,7 +24,6 @@ class IconAndBigTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Dimensions().init(context);
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [

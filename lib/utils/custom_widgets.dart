@@ -9,23 +9,22 @@ Widget cacheImage({
   required double width,
 }) {
   return Container(
-      alignment: Alignment.center,
-      height: height,
-      width: width,
-      // padding: EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        // color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(
-            radius,
-          ),
-        ),
+    alignment: Alignment.center,
+    height: height,
+    width: width,
+    // padding: EdgeInsets.all(2),
+    decoration: BoxDecoration(
+      // color: Colors.white,
+      borderRadius: BorderRadius.all(
+        Radius.circular(radius),
       ),
-      child: FadeInImage.assetNetwork(
-        placeholder: "assets/image/placeholder.png",
-        image: image,
-        fit: BoxFit.fill,
-      ));
+    ),
+    child: FadeInImage.assetNetwork(
+      placeholder: "assets/image/placeholder.png",
+      image: image,
+      fit: BoxFit.fill,
+    ),
+  );
 }
 
 OutlineInputBorder get errorBorder => OutlineInputBorder(

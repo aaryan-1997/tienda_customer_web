@@ -1,11 +1,13 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tiendaweb/api/api_url.dart';
-import 'package:tiendaweb/provider/homePro/home_provider.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:get/get.dart';
+import 'package:tiendaweb/api/app_constant.dart';
+import 'package:tiendaweb/controllers/home_controller.dart';
+import 'package:tiendaweb/controllers/store_controller.dart';
+import 'package:tiendaweb/routes/routes.dart';
 import 'package:tiendaweb/utils/colors.dart';
+import 'package:tiendaweb/utils/constant.dart';
 import 'package:tiendaweb/utils/dimension.dart';
 import 'package:tiendaweb/widgets/app_icon.dart';
 import 'package:tiendaweb/widgets/big_text.dart';
@@ -15,14 +17,14 @@ import 'package:tiendaweb/widgets/small_text.dart';
 import '../../utils/custom_widgets.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String shopId;
-  const HomeScreen({Key? key, required this.shopId}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  StoreController _storeController = Get.find();
   List<String> imgList = [
     'https://www.texcial.com/wp-content/uploads/2020/07/EFWEF.png',
     'http://onlyracks.com/images/slider-2.jpg'
@@ -31,25 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _initFun();
+      _storeController.initalLoad(context);
     });
     super.initState();
   }
 
-  _initFun() async {
-    log('message  ${widget.shopId}');
-    // await context.read<AuthProvider>().fetchUserInfo(context: context,);
-    await Provider.of<HomeProvider>(context, listen: false)
-        .fetchSlider(context: context, isLoad: false, id: widget.shopId);
-    await Provider.of<HomeProvider>(context, listen: false)
-        .fetchCategory(context: context, isLoad: false, id: widget.shopId);
-    await Provider.of<HomeProvider>(context, listen: false)
-        .fetchProduct(context: context, isLoad: false, id: widget.shopId);
-  }
-
   @override
   Widget build(BuildContext context) {
-    Dimensions().init(context);
     return Scaffold(
       backgroundColor: AppColor.white,
       appBar: appBar,
@@ -76,13 +66,19 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconAndBigTextWidget(
-                  icon: Icons.home_rounded,
-                  text: 'Home',
-                  iconColor: AppColor.black,
-                  textColor: AppColor.black,
-                  iconSize: Dimensions.height30,
-                  textSize: Dimensions.font20,
+                InkWell(
+                  focusColor: AppColor.grey,
+                  onTap: () async {
+                    await _storeController.initalLoad(context);
+                  },
+                  child: IconAndBigTextWidget(
+                    icon: Icons.home_rounded,
+                    text: 'Home',
+                    iconColor: AppColor.black,
+                    textColor: AppColor.black,
+                    iconSize: Dimensions.height30,
+                    textSize: Dimensions.font20,
+                  ),
                 ),
                 SizedBox(width: Dimensions.height20),
                 IconAndBigTextWidget(
@@ -112,13 +108,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   textSize: Dimensions.font20,
                 ),
                 SizedBox(width: Dimensions.height20),
-                IconAndBigTextWidget(
-                  icon: Icons.person_rounded,
-                  text: 'Contact Us',
-                  iconColor: AppColor.black,
-                  textColor: AppColor.black,
-                  iconSize: Dimensions.height30,
-                  textSize: Dimensions.font20,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.getStoreRoute());
+                  },
+                  child: IconAndBigTextWidget(
+                    icon: Icons.add_business_sharp,
+                    text: 'Your Stores',
+                    iconColor: AppColor.black,
+                    textColor: AppColor.black,
+                    iconSize: Dimensions.height30,
+                    textSize: Dimensions.font20,
+                  ),
                 ),
                 SizedBox(width: Dimensions.height20),
               ],
@@ -168,16 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           products,
+          //Bottom Bar
+          bottomBar,
         ],
       );
 
-  Widget get carousel =>
-      Consumer<HomeProvider>(builder: (context, data, child) {
-        return (data.sliders.isEmpty)
+  Widget get carousel => GetBuilder<HomeController>(builder: (homeController) {
+        return (homeController.sliderList.isEmpty)
             ? Container()
             : CarouselSlider.builder(
                 options: CarouselOptions(
-                  height: Dimensions.screenHeight! * 0.9,
+                  height: Dimensions.screenHeight * 0.9,
                   enlargeCenterPage: true,
                   autoPlay: false,
                   aspectRatio: 16 / 9,
@@ -186,20 +188,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   autoPlayAnimationDuration: Duration(milliseconds: 1200),
                   viewportFraction: 1.0,
                 ),
-                itemCount: data.sliders.length,
+                itemCount: homeController.sliderList.length,
                 itemBuilder: (context, i, pageIndex) {
-                  var item = data.sliders[i];
+                  var item = homeController.sliderList[i];
                   return cacheImage(
-                      image: item.sliderImage,
+                      image: item.sliderImage ?? "",
                       radius: 0,
-                      height: Dimensions.screenHeight! * 0.9,
-                      width: Dimensions.screenWidth!);
+                      height: Dimensions.screenHeight * 0.9,
+                      width: Dimensions.screenWidth);
                 },
               );
       });
 
   Widget get offers => Container(
-        height: Dimensions.screenHeight! * 0.2,
+        height: Dimensions.screenHeight * 0.2,
         padding: EdgeInsets.all(10),
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -207,8 +209,8 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, index) {
               return Container(
                 margin: EdgeInsets.all(5),
-                height: Dimensions.screenHeight! * 0.16,
-                width: Dimensions.screenHeight! * 0.2,
+                height: Dimensions.screenHeight * 0.16,
+                width: Dimensions.screenHeight * 0.2,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/image/placeholder.png'),
@@ -218,9 +220,9 @@ class _HomeScreenState extends State<HomeScreen> {
             }),
       );
 
-  Widget get categories => Consumer<HomeProvider>(
-        builder: (context, data, child) {
-          return (data.category.isEmpty)
+  Widget get categories => GetBuilder<HomeController>(
+        builder: (homeController) {
+          return (homeController.categoryList.isEmpty)
               ? Container()
               : Container(
                   height: Dimensions.width80,
@@ -231,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       bottom: Dimensions.height10),
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: data.category.length,
+                      itemCount: homeController.categoryList.length,
                       itemBuilder: (context, index) {
                         return Container(
                           margin: EdgeInsets.only(right: Dimensions.width5),
@@ -250,14 +252,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
-                                    image: NetworkImage(Url.IMAGE_BASE_URL +
-                                        "${data.category[index].icon}"),
+                                    image: NetworkImage(AppConstant
+                                            .IMAGE_BASE_URL +
+                                        "${homeController.categoryList[index].icon}"),
                                   ),
                                 ),
                               ),
                               SizedBox(width: Dimensions.width5),
                               BigText(
-                                text: "${data.category[index].name}",
+                                text:
+                                    "${homeController.categoryList[index].name}",
                                 color: AppColor.black,
                                 size: Dimensions.font18,
                                 weight: FontWeight.bold,
@@ -270,9 +274,8 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       );
 
-  Widget get products =>
-      Consumer<HomeProvider>(builder: (context, data, child) {
-        return (data.category.isEmpty)
+  Widget get products => GetBuilder<HomeController>(builder: (homeController) {
+        return (homeController.productList.isEmpty)
             ? Container()
             : Container(
                 padding: EdgeInsets.only(
@@ -281,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     right: Dimensions.height15,
                     bottom: Dimensions.height15),
                 child: GridView.builder(
-                  itemCount: data.productList.length,
+                  itemCount: homeController.productList.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -318,8 +321,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                     borderRadius: BorderRadius.circular(
                                         Dimensions.radius15),
                                     image: DecorationImage(
-                                      image: NetworkImage(Url.IMAGE_BASE_URL +
-                                          "${data.productList[index].thumbnailImage}"),
+                                      image: NetworkImage(AppConstant
+                                              .IMAGE_BASE_URL +
+                                          "${homeController.productList[index].thumbnailImage}"),
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -327,7 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 SizedBox(height: Dimensions.height10),
                                 BigText(
                                   text:
-                                      "₹ ${data.productList[index].basePrice}",
+                                      "₹ ${homeController.productList[index].basePrice}",
                                   color: AppColor.black,
                                   size: Dimensions.font18,
                                   weight: FontWeight.bold,
@@ -339,7 +343,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         left: Dimensions.width10,
                                         right: Dimensions.width5),
                                     child: BigText(
-                                      text: data.productList[index].name ?? "",
+                                      text: homeController
+                                              .productList[index].name ??
+                                          "",
                                       size: Dimensions.font18,
                                       maxline: 2,
                                       weight: FontWeight.w500,
@@ -353,17 +359,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             Positioned(
                               top: Dimensions.height5,
                               right: Dimensions.width5,
-                              child: data.productList[index]
+                              child: homeController.productList[index]
                                           .isAvailableWishlist ==
                                       true
                                   // Remove from favourite
                                   ? GestureDetector(
                                       onTap: () async {
-                                        await data.removeFromWishList(
-                                            context: context,
-                                            isLoad: false,
-                                            storeId: widget.shopId,
-                                            prodId: data.productList[index].id
+                                        await homeController.removeFromWishList(
+                                            homeController.productList[index].id
                                                 .toString());
                                       },
                                       child: AppIcon(
@@ -377,11 +380,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   // Add to favourite
                                   : GestureDetector(
                                       onTap: () async {
-                                        await data.addToWishList(
-                                            context: context,
-                                            isLoad: false,
-                                            storeId: widget.shopId,
-                                            prodId: data.productList[index].id
+                                        await homeController.addToWishList(
+                                            homeController.productList[index].id
                                                 .toString());
                                       },
                                       child: AppIcon(
@@ -401,4 +401,123 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
       });
+  Widget get bottomBar => SizedBox(
+        height: Dimensions.screenHeight / 1.5,
+        width: Dimensions.screenWidth,
+        child: ClipPath(
+          clipper: WaveClipperOne(flip: true, reverse: true),
+          child: Container(
+            color: AppColor.appColor.withOpacity(0.2),
+            padding: EdgeInsets.only(
+                top: Dimensions.height60,
+                left: Dimensions.width45,
+                right: Dimensions.width45),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Expanded(
+                  child: SizedBox(
+                    width: Dimensions.screenWidth / 4,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: Dimensions.height100,
+                          width: Dimensions.width100,
+                          child: Image.asset("assets/image/splash.png"),
+                        ),
+                        SizedBox(height: Dimensions.height45),
+                        SmallText(
+                          text: ConstantKey.about,
+                          color: AppColor.black,
+                          size: Dimensions.font16,
+                          maxLine: 5,
+                        ),
+                        SizedBox(height: Dimensions.height30),
+                        Row(
+                          children: [
+                            SmallText(
+                              text: "Address",
+                              color: AppColor.black,
+                              size: Dimensions.font18,
+                            ),
+                            SizedBox(width: Dimensions.width10),
+                            BigText(
+                              text: "D-77,Noida Sector 63",
+                              color: AppColor.black,
+                              size: Dimensions.font16,
+                              maxline: 2,
+                              weight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: Dimensions.height30),
+                        Row(
+                          children: [
+                            SmallText(
+                              text: "Email",
+                              color: AppColor.black,
+                              size: Dimensions.font18,
+                            ),
+                            SizedBox(width: Dimensions.width10),
+                            BigText(
+                              text: "demo@test.com",
+                              color: AppColor.black,
+                              size: Dimensions.font16,
+                              weight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: Dimensions.height30),
+                        Row(
+                          children: [
+                            SmallText(
+                              text: "Call Us ",
+                              color: AppColor.black,
+                              size: Dimensions.font18,
+                              maxLine: 2,
+                            ),
+                            SizedBox(width: Dimensions.width10),
+                            BigText(
+                              text: "9884435XX",
+                              color: AppColor.black,
+                              size: Dimensions.font16,
+                              weight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: Dimensions.screenWidth / 4,
+                    child: Column(
+                      children: [],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: Dimensions.screenWidth / 4,
+                    child: Column(
+                      children: [],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: Dimensions.screenWidth / 4,
+                    child: Column(
+                      children: [],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
 }
