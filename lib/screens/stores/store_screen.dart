@@ -134,7 +134,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             ConstantKey.storeIdKey,
                             storeController.storedetailList[index].userId
                                 .toString());
-                        await storeController.initalLoad(context);
+                        // await storeController.initalLoad(context);
                         Get.offNamedUntil(
                             Routes.getHomeRoute(), (route) => false);
                       },

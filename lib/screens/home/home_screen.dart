@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  StoreController _storeController = Get.find();
+  final StoreController _storeController = Get.find();
   List<String> imgList = [
     'https://www.texcial.com/wp-content/uploads/2020/07/EFWEF.png',
     'http://onlyracks.com/images/slider-2.jpg'
@@ -81,13 +81,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(width: Dimensions.height20),
-                IconAndBigTextWidget(
-                  icon: Icons.category,
-                  text: 'Category',
-                  iconColor: AppColor.black,
-                  textColor: AppColor.black,
-                  iconSize: Dimensions.height30,
-                  textSize: Dimensions.font20,
+                GestureDetector(
+                  onTap: () {
+                    Get.toNamed(Routes.getCategoryRoute());
+                  },
+                  child: IconAndBigTextWidget(
+                    icon: Icons.category,
+                    text: 'Category',
+                    iconColor: AppColor.black,
+                    textColor: AppColor.black,
+                    iconSize: Dimensions.height30,
+                    textSize: Dimensions.font20,
+                  ),
                 ),
                 SizedBox(width: Dimensions.height20),
                 IconAndBigTextWidget(
@@ -150,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(width: Dimensions.height10),
           // categories
           Container(
-            margin: EdgeInsets.only(left: Dimensions.width20),
+            margin: EdgeInsets.only(left: Dimensions.width120),
             child: BigText(
               text: "Categories",
               weight: FontWeight.bold,
@@ -161,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(width: Dimensions.height10),
           //product
           Container(
-            margin: EdgeInsets.only(left: Dimensions.width20),
+            margin: EdgeInsets.only(left: Dimensions.width120),
             child: BigText(
               text: "Popular Products",
               weight: FontWeight.bold,
@@ -227,8 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
               : Container(
                   height: Dimensions.width80,
                   margin: EdgeInsets.only(
-                      left: Dimensions.width10,
-                      right: Dimensions.width10,
+                      left: Dimensions.width120,
+                      right: Dimensions.width120,
                       top: Dimensions.height10,
                       bottom: Dimensions.height10),
                   child: ListView.builder(
@@ -278,6 +283,10 @@ class _HomeScreenState extends State<HomeScreen> {
         return (homeController.productList.isEmpty)
             ? Container()
             : Container(
+                margin: EdgeInsets.only(
+                  left: Dimensions.width140,
+                  right: Dimensions.width140,
+                ),
                 padding: EdgeInsets.only(
                     top: Dimensions.height15,
                     left: Dimensions.height15,
@@ -401,8 +410,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
       });
+
   Widget get bottomBar => SizedBox(
-        height: Dimensions.screenHeight / 1.5,
+        height: Dimensions.screenHeight / 1.6,
         width: Dimensions.screenWidth,
         child: ClipPath(
           clipper: WaveClipperOne(flip: true, reverse: true),
@@ -427,18 +437,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: Dimensions.width100,
                           child: Image.asset("assets/image/splash.png"),
                         ),
-                        SizedBox(height: Dimensions.height45),
+                        SizedBox(height: Dimensions.height30),
                         SmallText(
                           text: ConstantKey.about,
                           color: AppColor.black,
                           size: Dimensions.font16,
                           maxLine: 5,
                         ),
-                        SizedBox(height: Dimensions.height30),
+                        SizedBox(height: Dimensions.height20),
                         Row(
                           children: [
                             SmallText(
-                              text: "Address",
+                              text: "Address :",
                               color: AppColor.black,
                               size: Dimensions.font18,
                             ),
@@ -452,11 +462,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: Dimensions.height30),
+                        SizedBox(height: Dimensions.height20),
                         Row(
                           children: [
                             SmallText(
-                              text: "Email",
+                              text: "Email :",
                               color: AppColor.black,
                               size: Dimensions.font18,
                             ),
@@ -469,11 +479,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(height: Dimensions.height30),
+                        SizedBox(height: Dimensions.height20),
                         Row(
                           children: [
                             SmallText(
-                              text: "Call Us ",
+                              text: "Call Us :",
                               color: AppColor.black,
                               size: Dimensions.font18,
                               maxLine: 2,
@@ -492,26 +502,153 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 Expanded(
-                  child: SizedBox(
+                  child: Container(
                     width: Dimensions.screenWidth / 4,
+                    margin: EdgeInsets.only(left: Dimensions.width60),
                     child: Column(
-                      children: [],
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: Dimensions.height60),
+                        BigText(
+                          text: "Quick Links",
+                          color: AppColor.black,
+                          size: Dimensions.font26,
+                          weight: FontWeight.bold,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "Home",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "Shop",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "About",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "Contact Us",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 Expanded(
-                  child: SizedBox(
+                  child: Container(
                     width: Dimensions.screenWidth / 4,
+                    margin: EdgeInsets.only(left: Dimensions.width60),
                     child: Column(
-                      children: [],
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: Dimensions.height60),
+                        BigText(
+                          text: "Extra Links",
+                          color: AppColor.black,
+                          size: Dimensions.font26,
+                          weight: FontWeight.bold,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "My Orders",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "My Wishlist",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "My Acount",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        IconAndBigTextWidget(
+                          icon: Icons.arrow_forward,
+                          text: "Term & Condition",
+                          space: Dimensions.width5,
+                          iconColor: AppColor.appColor,
+                          textSize: Dimensions.font20,
+                          textColor: AppColor.black,
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 Expanded(
-                  child: SizedBox(
+                  child: Container(
                     width: Dimensions.screenWidth / 4,
+                    margin: EdgeInsets.only(left: Dimensions.width60),
                     child: Column(
-                      children: [],
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: Dimensions.height60),
+                        BigText(
+                          text: "Download Our App",
+                          color: AppColor.black,
+                          size: Dimensions.font26,
+                          weight: FontWeight.bold,
+                        ),
+                        SizedBox(height: Dimensions.height20),
+                        Container(
+                          height: Dimensions.height100,
+                          width: Dimensions.screenWidth / 4,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    AssetImage('assets/image/play_store.png'),
+                                fit: BoxFit.contain),
+                          ),
+                        ),
+                        SizedBox(height: Dimensions.height10),
+                        Container(
+                          height: Dimensions.height100,
+                          width: Dimensions.screenWidth / 4,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image:
+                                    AssetImage('assets/image/apple_store.png'),
+                                fit: BoxFit.contain),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

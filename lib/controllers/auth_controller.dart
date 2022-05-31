@@ -29,11 +29,11 @@ class AuthController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
-  Future<void> getFcmToken() async {
+  Future<String> getFcmToken() async {
     _firebaseMessaging.getToken().then((String? token) {
       fcmToken = token.toString();
     });
-    update([fcmToken]);
+    return fcmToken;
   }
 
 //=====================Login
@@ -43,7 +43,7 @@ class AuthController extends GetxController {
       update();
       var body = {
         "username": mobileNumberController.text.trim(),
-        "device_token": fcmToken
+        "device_token": await getFcmToken(),
       };
       UserModel response = await authRepo.login(body);
       if ((response.result != null && response.result == true) &&
@@ -71,7 +71,7 @@ class AuthController extends GetxController {
       var body = {
         "user_mobile": mobileNumberController.text.trim(),
         "user_name": nameController.text.trim(),
-        "device_token": fcmToken,
+        "device_token": await getFcmToken(),
       };
       SignUpModel response = await authRepo.signUp(body);
       if (response.result != null && response.result == true) {

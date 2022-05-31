@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:tiendaweb/screens/auth/login_screen.dart';
 import 'package:tiendaweb/screens/auth/otp_screen.dart';
 import 'package:tiendaweb/screens/auth/signup_screen.dart';
+import 'package:tiendaweb/screens/home/category_screen.dart';
 import 'package:tiendaweb/screens/home/home_screen.dart';
 import 'package:tiendaweb/screens/splash/splash.dart';
 import 'package:tiendaweb/screens/stores/add_store.dart';
@@ -10,6 +11,7 @@ import 'package:tiendaweb/screens/stores/store_screen.dart';
 class Routes {
   static const String initial = "/";
   static const String homescreen = "/home-screen";
+  static const String categoryscreen = "/category-screen";
   static const String loginScreen = "/login-screen";
   static const String signupScreen = "/signup-screen";
   static const String otpScreen = "/otp-screen";
@@ -20,6 +22,7 @@ class Routes {
   static String getInitial() => initial;
   static String getLoginRoute() => loginScreen;
   static String getHomeRoute() => homescreen;
+  static String getCategoryRoute() => categoryscreen;
   static String getSignupRoute() => signupScreen;
   static String getOtpRoute(String mobile) => "$otpScreen?mobile=$mobile";
   static String getAddStoreRoute() => addStoreScreen;
@@ -62,6 +65,12 @@ class Routes {
         name: storeScreen,
         page: () {
           return const StoreScreen();
+        },
+        transition: Transition.fadeIn),
+    GetPage(
+        name: categoryscreen,
+        page: () {
+          return const CategoryScreen();
         },
         transition: Transition.fadeIn),
   ];

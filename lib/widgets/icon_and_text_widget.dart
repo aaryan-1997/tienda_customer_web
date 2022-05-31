@@ -8,6 +8,7 @@ class IconAndBigTextWidget extends StatelessWidget {
   final Color textColor;
   final double textSize;
   final double iconSize;
+  final double space;
   final FontWeight weight;
   final MainAxisAlignment mainAxisAlignment;
   const IconAndBigTextWidget(
@@ -16,6 +17,7 @@ class IconAndBigTextWidget extends StatelessWidget {
       required this.text,
       this.textSize = 12,
       this.iconSize = 20,
+      this.space = 1,
       this.weight = FontWeight.normal,
       this.mainAxisAlignment = MainAxisAlignment.start,
       this.textColor = const Color(0xFFccc7c5),
@@ -28,7 +30,7 @@ class IconAndBigTextWidget extends StatelessWidget {
       mainAxisAlignment: mainAxisAlignment,
       children: [
         Icon(icon, color: iconColor, size: iconSize),
-        const SizedBox(width: 1),
+        SizedBox(width: space),
         BigText(text: text, color: textColor, size: textSize, weight: weight),
       ],
     );
