@@ -3,15 +3,12 @@ import 'package:get/get.dart';
 import 'package:tiendaweb/api/app_constant.dart';
 import 'package:tiendaweb/controllers/home_controller.dart';
 import 'package:tiendaweb/controllers/store_controller.dart';
-import 'package:tiendaweb/routes/routes.dart';
 import 'package:tiendaweb/utils/colors.dart';
 import 'package:tiendaweb/utils/custom_app_bar.dart';
 import 'package:tiendaweb/utils/custom_bottom_bar.dart';
 import 'package:tiendaweb/utils/dimension.dart';
 import 'package:tiendaweb/widgets/app_icon.dart';
 import 'package:tiendaweb/widgets/big_text.dart';
-import 'package:tiendaweb/widgets/icon_and_text_widget.dart';
-import 'package:tiendaweb/widgets/small_text.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({Key? key}) : super(key: key);

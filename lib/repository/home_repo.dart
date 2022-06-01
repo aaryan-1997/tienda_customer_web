@@ -7,6 +7,7 @@ import 'package:tiendaweb/model/homeModel/category_response.dart';
 import 'package:tiendaweb/model/homeModel/common_response.dart';
 import 'package:tiendaweb/model/homeModel/product_response.dart';
 import 'package:tiendaweb/model/homeModel/slider_model.dart';
+import 'package:tiendaweb/model/homeModel/wishlist_response_model.dart';
 
 class HomeRepo extends GetxService {
   ApiClient apiClient;
@@ -181,24 +182,21 @@ class HomeRepo extends GetxService {
     return commonResponse;
   }
 
-  // Future<WishlistProductResponse> getWishlistProduct(String shopId) async {
-  //   WishlistProductResponse wishlistProductResponse = WishlistProductResponse();
-  //   try {
-  //     Response response =
-  //         await apiClient.getData(AppConstant.GET_WISHLIST + shopId);
-  //     if (response.statusCode == 200) {
-  //       wishlistProductResponse =
-  //           WishlistProductResponse.fromJson(response.body);
-  //     } else if (response.statusCode == 400) {
-  //       wishlistProductResponse =
-  //           WishlistProductResponse.fromJson(response.body);
-  //     } else {
-  //       wishlistProductResponse = WishlistProductResponse();
-  //     }
-  //   } catch (e) {
-  //     log("Get wishlist error " + e.toString());
-  //   }
-  //   return wishlistProductResponse;
-  // }
-
+  Future<WishlistResponseModel> getWishlistProduct(String shopId) async {
+    WishlistResponseModel wishlistProductResponse = WishlistResponseModel();
+    try {
+      Response response =
+          await apiClient.getData(url: AppConstant.GET_WISHLIST + shopId);
+      if (response.statusCode == 200) {
+        wishlistProductResponse = WishlistResponseModel.fromJson(response.body);
+      } else if (response.statusCode == 400) {
+        wishlistProductResponse = WishlistResponseModel.fromJson(response.body);
+      } else {
+        wishlistProductResponse = WishlistResponseModel();
+      }
+    } catch (e) {
+      log("Get wishlist error " + e.toString());
+    }
+    return wishlistProductResponse;
+  }
 }

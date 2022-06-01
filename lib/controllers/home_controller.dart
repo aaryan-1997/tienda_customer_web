@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:tiendaweb/model/homeModel/wishlist_response_model.dart';
 import 'package:tiendaweb/repository/home_repo.dart';
 import 'package:tiendaweb/model/homeModel/category_response.dart';
 import 'package:tiendaweb/model/homeModel/common_response.dart';
@@ -40,8 +41,8 @@ class HomeController extends GetxController {
   // List<ProductVarient> _productVarient = [];
   // List<ProductVarient> get productVarient => _productVarient;
 
-  // List<WishlistProduct> _wishlistProduct = [];
-  // List<WishlistProduct> get wishlistProduct => _wishlistProduct;
+  List<WishlistProduct> _wishlistProduct = [];
+  List<WishlistProduct> get wishlistProduct => _wishlistProduct;
 
   SPFunction spFunction = SPFunction();
   // XFile? pickedFile;
@@ -153,6 +154,24 @@ class HomeController extends GetxController {
 
 //=====
 
+  Future<void> getWishlistProduct() async {
+    try {
+      _isLoading = true;
+      var storeId = await spFunction.getString(ConstantKey.storeIdKey);
+      WishlistResponseModel response =
+          await homeRepo.getWishlistProduct(storeId);
+      if (response.result != null && response.result == true) {
+        _wishlistProduct = response.wishlistProduct!;
+      }
+    } catch (e) {
+      _isLoading = false;
+      update();
+      log("Get wishlist error" + e.toString());
+    }
+    _isLoading = false;
+    update();
+  }
+
   Future<void> addToWishList(String prodId) async {
     try {
       var storeId = await spFunction.getString(ConstantKey.storeIdKey);
@@ -160,7 +179,7 @@ class HomeController extends GetxController {
       CommonResponse commonResponse = await homeRepo.addToWishList(body);
       if (commonResponse.result != null && commonResponse.result == true) {
         homeProduct();
-        //getWishlistProduct();
+        getWishlistProduct();
         AppUtils().showSnackBar(message: commonResponse.message.toString());
       } else if (commonResponse.result != null &&
           commonResponse.result == false) {
@@ -179,7 +198,7 @@ class HomeController extends GetxController {
       CommonResponse commonResponse = await homeRepo.removeFromWishList(body);
       if (commonResponse.result != null && commonResponse.result == true) {
         homeProduct();
-        // getWishlistProduct();
+        getWishlistProduct();
         AppUtils().showSnackBar(message: commonResponse.message.toString());
       } else if (commonResponse.result != null &&
           commonResponse.result == false) {

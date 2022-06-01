@@ -38,22 +38,32 @@ AppBar get appBar => AppBar(
                 ),
               ),
               SizedBox(width: Dimensions.height20),
-              IconAndBigTextWidget(
-                icon: Icons.category,
-                text: 'Category',
-                iconColor: AppColor.black,
-                textColor: AppColor.black,
-                iconSize: Dimensions.height30,
-                textSize: Dimensions.font20,
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.getCategoryRoute());
+                },
+                child: IconAndBigTextWidget(
+                  icon: Icons.category,
+                  text: 'Category',
+                  iconColor: AppColor.black,
+                  textColor: AppColor.black,
+                  iconSize: Dimensions.height30,
+                  textSize: Dimensions.font20,
+                ),
               ),
               SizedBox(width: Dimensions.height20),
-              IconAndBigTextWidget(
-                icon: Icons.favorite_rounded,
-                text: 'Wishlist',
-                iconColor: AppColor.black,
-                textColor: AppColor.black,
-                iconSize: Dimensions.height30,
-                textSize: Dimensions.font20,
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.getWishlistRoute());
+                },
+                child: IconAndBigTextWidget(
+                  icon: Icons.favorite_rounded,
+                  text: 'Wishlist',
+                  iconColor: AppColor.black,
+                  textColor: AppColor.black,
+                  iconSize: Dimensions.height30,
+                  textSize: Dimensions.font20,
+                ),
               ),
               SizedBox(width: Dimensions.height20),
               IconAndBigTextWidget(

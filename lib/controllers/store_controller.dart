@@ -97,6 +97,7 @@ class StoreController extends GetxController {
     showLoaderDialog(context);
     await _homeController.category();
     await _homeController.homeProduct();
+    await _homeController.getWishlistProduct();
     Navigator.pop(context);
   }
 }
