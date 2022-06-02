@@ -228,7 +228,7 @@ class _StoreScreenState extends State<StoreScreen> {
                     var item = storeController.nearbyStore[index];
                     return InkWell(
                       onTap: () {
-                        storeController.initalLoad(context);
+                        storeController.initalLoad();
                         Get.offNamedUntil(
                             Routes.getHomeRoute(), (route) => false);
                       },

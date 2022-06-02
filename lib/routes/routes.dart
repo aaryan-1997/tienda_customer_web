@@ -5,6 +5,7 @@ import 'package:tiendaweb/screens/auth/signup_screen.dart';
 import 'package:tiendaweb/screens/home/category_screen.dart';
 import 'package:tiendaweb/screens/home/home_screen.dart';
 import 'package:tiendaweb/screens/home/wish_list_screen.dart';
+import 'package:tiendaweb/screens/profile/profile_screen.dart';
 import 'package:tiendaweb/screens/splash/splash.dart';
 import 'package:tiendaweb/screens/stores/add_store.dart';
 import 'package:tiendaweb/screens/stores/store_screen.dart';
@@ -19,6 +20,7 @@ class Routes {
   static const String addStoreScreen = "/add-store-screen";
   static const String storeScreen = "/store-screen";
   static const String wishlistScreen = "/wishlist-screen";
+  static const String profileScreen = "/profile-screen";
 
   //====Using this method we can pass parameter
   static String getInitial() => initial;
@@ -30,6 +32,7 @@ class Routes {
   static String getAddStoreRoute() => addStoreScreen;
   static String getStoreRoute() => storeScreen;
   static String getWishlistRoute() => wishlistScreen;
+  static String getProfileRoute() => profileScreen;
 
   static List<GetPage> routes = [
     GetPage(name: initial, page: () => const SplashScreen()),
@@ -80,6 +83,12 @@ class Routes {
         name: wishlistScreen,
         page: () {
           return const WishListScreen();
+        },
+        transition: Transition.fadeIn),
+    GetPage(
+        name: profileScreen,
+        page: () {
+          return const ProfileScreen();
         },
         transition: Transition.fadeIn),
   ];

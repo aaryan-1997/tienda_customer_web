@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _storeController.initalLoad(context);
+      _storeController.initalLoad();
     });
     super.initState();
   }
@@ -71,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 InkWell(
                   focusColor: AppColor.grey,
                   onTap: () async {
-                    await _storeController.initalLoad(context);
+                    await _storeController.initalLoad();
                   },
                   child: IconAndBigTextWidget(
                     icon: Icons.home_rounded,
@@ -146,7 +146,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {},
               icon: Icon(Icons.shopping_cart, color: AppColor.black)),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(Routes.getProfileRoute());
+              },
               icon: Icon(Icons.person, color: AppColor.black)),
           SizedBox(width: Dimensions.width10),
         ],
@@ -552,7 +554,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: Dimensions.height20),
                         GestureDetector(
                           onTap: () async {
-                            await _storeController.initalLoad(context);
+                            await _storeController.initalLoad();
                           },
                           child: IconAndBigTextWidget(
                             icon: Icons.arrow_forward,
@@ -648,7 +650,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(height: Dimensions.height20),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed(Routes.getProfileRoute());
+                          },
                           child: IconAndBigTextWidget(
                             icon: Icons.arrow_forward,
                             text: "My Acount",

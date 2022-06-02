@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:get/get.dart';
 import '/utils/colors.dart';
 import 'dart:math';
 
@@ -206,7 +207,7 @@ class Dot extends StatelessWidget {
   }
 }
 
-void showLoaderDialog(BuildContext context) {
+void showLoaderDialog() {
   AlertDialog alertDialogs = AlertDialog(
     elevation: 0,
     backgroundColor: Colors.white,
@@ -228,12 +229,13 @@ void showLoaderDialog(BuildContext context) {
       ],
     ),
   );
-  showDialog(
-    barrierDismissible: false,
-    barrierColor: Colors.black38,
-    context: context,
-    builder: (BuildContext context) {
-      return alertDialogs;
-    },
-  );
+  Get.dialog(alertDialogs);
+  // showDialog(
+  //   barrierDismissible: false,
+  //   barrierColor: Colors.black38,
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return alertDialogs;
+  //   },
+  // );
 }

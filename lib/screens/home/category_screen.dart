@@ -23,7 +23,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _storeController.initalLoad(context);
+      _storeController.initalLoad();
     });
     super.initState();
   }

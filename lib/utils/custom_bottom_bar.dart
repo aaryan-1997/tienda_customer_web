@@ -216,7 +216,9 @@ Widget get bottomBar => SizedBox(
                       ),
                       SizedBox(height: Dimensions.height20),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Get.toNamed(Routes.getProfileRoute());
+                        },
                         child: IconAndBigTextWidget(
                           icon: Icons.arrow_forward,
                           text: "My Acount",

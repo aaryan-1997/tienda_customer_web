@@ -8,6 +8,7 @@ import 'package:tiendaweb/widgets/icon_and_text_widget.dart';
 AppBar get appBar => AppBar(
       centerTitle: true,
       elevation: 0.4,
+      automaticallyImplyLeading: false,
       flexibleSpace: Container(color: AppColor.white),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -100,7 +101,10 @@ AppBar get appBar => AppBar(
             onPressed: () {},
             icon: Icon(Icons.shopping_cart, color: AppColor.black)),
         IconButton(
-            onPressed: () {}, icon: Icon(Icons.person, color: AppColor.black)),
+            onPressed: () {
+              Get.toNamed(Routes.getProfileRoute());
+            },
+            icon: Icon(Icons.person, color: AppColor.black)),
         SizedBox(width: Dimensions.width10),
       ],
     );

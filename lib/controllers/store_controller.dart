@@ -93,11 +93,11 @@ class StoreController extends GetxController {
     }
   }
 
-  Future<void> initalLoad(BuildContext context) async {
-    showLoaderDialog(context);
+  Future<void> initalLoad() async {
+    showLoaderDialog();
     await _homeController.category();
     await _homeController.homeProduct();
     await _homeController.getWishlistProduct();
-    Navigator.pop(context);
+    Get.back();
   }
 }

@@ -23,7 +23,7 @@ class _WishListScreenState extends State<WishListScreen> {
   @override
   void initState() {
     WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      _storeController.initalLoad(context);
+      _storeController.initalLoad();
     });
     super.initState();
   }
@@ -111,63 +111,69 @@ class _WishListScreenState extends State<WishListScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    height: Dimensions.screenHeight * 0.25,
-                                    width: Dimensions.screenWidth,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          Dimensions.radius10),
-                                      image: DecorationImage(
-                                          image: NetworkImage(AppConstant
-                                                  .IMAGE_BASE_URL +
-                                              "${homeController.wishlistProduct[index].product?.thumbnailImage}"),
-                                          fit: BoxFit.cover),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          height: Dimensions.height30,
-                                          margin: EdgeInsets.only(
+                                  Expanded(
+                                    child: Container(
+                                      height: Dimensions.height140,
+                                      width: Dimensions.screenWidth,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                            Dimensions.radius10),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                              AppConstant.IMAGE_BASE_URL +
+                                                  "${homeController.wishlistProduct[index].product?.thumbnailImage}",
+                                            ),
+                                            fit: BoxFit.cover),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            height: Dimensions.height30,
+                                            margin: EdgeInsets.only(
+                                                right: Dimensions.width5,
+                                                bottom: Dimensions.height5),
+                                            padding: EdgeInsets.only(
+                                              left: Dimensions.width5,
                                               right: Dimensions.width5,
-                                              bottom: Dimensions.height5),
-                                          padding: EdgeInsets.only(
-                                            left: Dimensions.width5,
-                                            right: Dimensions.width5,
-                                            top: Dimensions.height5 / 2,
-                                            bottom: Dimensions.height5 / 2,
+                                              top: Dimensions.height5 / 2,
+                                              bottom: Dimensions.height5 / 2,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: AppColor.appColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      Dimensions.width10),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: AppColor.white,
+                                                  size: Dimensions.iconSize20,
+                                                ),
+                                                SmallText(
+                                                  text:
+                                                      "${homeController.wishlistProduct[index].product?.rating}",
+                                                  color: AppColor.white,
+                                                  size: Dimensions.font16,
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          decoration: BoxDecoration(
-                                            color: AppColor.appColor,
-                                            borderRadius: BorderRadius.circular(
-                                                Dimensions.width10),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(
-                                                Icons.star,
-                                                color: AppColor.white,
-                                                size: Dimensions.iconSize20,
-                                              ),
-                                              SmallText(
-                                                text:
-                                                    "${homeController.wishlistProduct[index].product?.rating}",
-                                                color: AppColor.white,
-                                                size: Dimensions.font16,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
+                                  SizedBox(height: Dimensions.height10),
                                   Expanded(
                                     child: Container(
                                       padding: EdgeInsets.only(
