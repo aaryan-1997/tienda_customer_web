@@ -1,28 +1,25 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiendaweb/controllers/auth_controller.dart';
-import 'package:tiendaweb/controllers/order_controller.dart';
 import 'package:tiendaweb/utils/colors.dart';
 import 'package:tiendaweb/utils/custom_app_bar.dart';
 import 'package:tiendaweb/utils/dimension.dart';
 import 'package:tiendaweb/widgets/app_icon.dart';
 import 'package:tiendaweb/widgets/small_text.dart';
 
-import '../../widgets/big_text.dart';
+import 'component/address_list.dart';
 import 'component/order_list.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+ 
+  const ProfileScreen({Key? key, }) : super(key: key);
 
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int selectedIndex = 0;
-
+   int selectedIndex=0;
   @override
   void initState() {
     super.initState();
@@ -41,11 +38,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget get body => Row(
         children: [
           Expanded(child: profileCard),
-          Expanded(flex: 4, child: mainBody[selectedIndex]),
+          Expanded(flex: 4, child: mainBody.elementAt(selectedIndex)),
         ],
       );
 
-  List<Widget> mainBody = [OrderList(), address, history, termCondition];
+  List<Widget> mainBody = [
+    OrderList(),
+    AddressList(),
+    history,
+    termCondition,
+  ];
 
   Widget get profileCard => Drawer(
         backgroundColor: AppColor.white,
@@ -99,12 +101,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
 }
 
-Widget get address => Column(children: [
-      SmallText(
-        text: "Address List",
-        color: AppColor.black,
-      )
-    ]);
 Widget get history => Column(children: [
       SmallText(
         text: "History List",

@@ -5,12 +5,13 @@ import 'package:get/get.dart';
 import 'package:tiendaweb/model/homeModel/wishlist_response_model.dart';
 import 'package:tiendaweb/repository/home_repo.dart';
 import 'package:tiendaweb/model/homeModel/category_response.dart';
-import 'package:tiendaweb/model/homeModel/common_response.dart';
 import 'package:tiendaweb/model/homeModel/product_response.dart';
 import 'package:tiendaweb/model/homeModel/slider_model.dart';
 import 'package:tiendaweb/utils/app_utils.dart';
 import 'package:tiendaweb/utils/constant.dart';
 import 'package:tiendaweb/utils/sp_function.dart';
+
+import '../model/common_response.dart';
 
 class HomeController extends GetxController {
   HomeRepo homeRepo;

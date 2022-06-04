@@ -80,7 +80,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(
                   width: 10,
                 ),
-                (width > 850) ? imageSection : Container(),
+                (width > 850) ? Expanded(child: imageSection) : Container(),
               ],
             ),
           ),

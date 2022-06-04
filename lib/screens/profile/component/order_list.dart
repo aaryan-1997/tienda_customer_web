@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tiendaweb/screens/profile/component/product_card.dart';
 import 'package:tiendaweb/utils/app_utils.dart';
-import 'package:tiendaweb/utils/custom_loader.dart';
 import 'package:tiendaweb/utils/shimmer_helper.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 
@@ -52,7 +51,7 @@ class _OrderListState extends State<OrderList> {
                 top: Dimensions.height20, left: Dimensions.width45),
             child: ListView.builder(
               controller: scrollController,
-              itemCount: _orderController.orderList.length,
+              itemCount: orderController.orderList.length,
               itemBuilder: ((context, index) {
                 return Row(
                   children: [
@@ -97,7 +96,7 @@ class _OrderListState extends State<OrderList> {
                                     SizedBox(width: Dimensions.width10),
                                     BigText(
                                       text:
-                                          "Order Id #${_orderController.orderList[index].code}",
+                                          "Order Id #${orderController.orderList[index].code}",
                                       color: AppColor.black,
                                       size: Dimensions.font18,
                                     ),
@@ -124,7 +123,7 @@ class _OrderListState extends State<OrderList> {
                                   ),
                                   child: SmallText(
                                     text:
-                                        "${_orderController.orderList[index].deliveryStatusString}",
+                                        "${orderController.orderList[index].deliveryStatusString}",
                                     color: AppColor.buttonColor,
                                   ),
                                 ),
@@ -153,7 +152,7 @@ class _OrderListState extends State<OrderList> {
                                         SizedBox(width: Dimensions.width15),
                                         SmallText(
                                           text:
-                                              "${_orderController.orderList[index].date}",
+                                              "${orderController.orderList[index].date}",
                                           color: AppColor.black,
                                           size: Dimensions.font15,
                                         ),
@@ -174,7 +173,7 @@ class _OrderListState extends State<OrderList> {
                                         SizedBox(width: Dimensions.width15),
                                         SmallText(
                                           text:
-                                              "${_orderController.orderList[index].grandTotal}",
+                                              "${orderController.orderList[index].grandTotal}",
                                           color: AppColor.black,
                                           size: Dimensions.font15,
                                         ),
@@ -188,7 +187,7 @@ class _OrderListState extends State<OrderList> {
                                   child: BigText(
                                     textAlign: TextAlign.right,
                                     text:
-                                        "${_orderController.orderList[index].paymentType}",
+                                        "${orderController.orderList[index].paymentType}",
                                     color: AppColor.green,
                                     size: Dimensions.font15,
                                     weight: FontWeight.bold,

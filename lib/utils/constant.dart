@@ -41,6 +41,7 @@ class ConstantKey {
   static const String isUserLoginKey = 'isUserLoginKey';
   static const String userLatitudeKey = 'latitude';
   static const String userLongitudeKey = 'longitude';
+  static const String userAddressKey = 'longitude';
 
   //===============
   static const String playStoreLink =

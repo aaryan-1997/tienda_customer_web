@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import 'package:tiendaweb/api/api_service.dart';
 import 'package:tiendaweb/api/app_constant.dart';
 import 'package:tiendaweb/model/homeModel/category_response.dart';
-import 'package:tiendaweb/model/homeModel/common_response.dart';
 import 'package:tiendaweb/model/homeModel/product_response.dart';
 import 'package:tiendaweb/model/homeModel/slider_model.dart';
 import 'package:tiendaweb/model/homeModel/wishlist_response_model.dart';
+
+import '../model/common_response.dart';
 
 class HomeRepo extends GetxService {
   ApiClient apiClient;

@@ -1,12 +1,10 @@
 import 'dart:developer';
-import 'dart:html';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tiendaweb/controllers/address_controller.dart';
 import 'package:tiendaweb/controllers/auth_controller.dart';
 import 'package:tiendaweb/controllers/home_controller.dart';
 import 'package:tiendaweb/controllers/local_db_controller.dart';
@@ -34,12 +32,8 @@ void main() async {
           measurementId: "G-ZMZQS98Q8E"));
 
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
-  goFullScreen();
-  runApp(const MyApp());
-}
 
-void goFullScreen() {
-  document.documentElement!.requestFullscreen();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -71,6 +65,7 @@ class _MyAppState extends State<MyApp> {
     Get.find<StoreController>().getNearByShop();
     Get.find<HomeController>();
     Get.find<OrderController>();
+    Get.find<AddressController>();
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
